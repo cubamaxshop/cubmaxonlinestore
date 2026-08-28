@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Pedido Recibido!</title>
+  <style>
+    /* Reset & Estilos Base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f4f8 0%, #e2e9f0 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Contenedor Principal */
+    .thank-you-card {
+      background: #ffffff;
+      max-width: 580px;
+      width: 100%;
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    /* Icono Principal Animado */
+    .icon-success {
+      width: 84px;
+      height: 84px;
+      background: #e8f8f5;
+      color: #00b894;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 20px;
+      font-size: 42px;
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    h1 {
+      color: #2d3436;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #636e72;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    /* Timeline / Detalles de los Siguientes Pasos */
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    .step-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    .step-item:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
+    }
+
+    .step-icon {
+      font-size: 22px;
+      line-height: 1;
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .step-text strong {
+      display: block;
+      color: #1e293b;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .step-text p {
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    /* Sección de Soporte WhatsApp */
+    .whatsapp-box {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .whatsapp-info {
+      font-size: 14px;
+      color: #166534;
+    }
+
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: #25d366;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: background-color 0.2s ease;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #20ba5a;
+    }
+
+    /* Estilo del botón "Volver al Inicio" con la estructura requerida */
+    .nav-item {
+      list-style: none;
+      width: 100%;
+    }
+
+    .nav-link {
+      display: block;
+      width: 100%;
+      padding: 16px 20px;
+      background-color: #0984e3;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 10px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 12px rgba(9, 132, 227, 0.25);
+    }
+
+    .nav-link:hover {
+      background-color: #0773c5;
+      box-shadow: 0 6px 16px rgba(9, 132, 227, 0.35);
+    }
+
+    /* Animaciones */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="thank-you-card">
+    <div class="icon-success">✓</div>
+    
+    <h1>¡Pedido Registrado con Éxito!</h1>
+    <p class="subtitle">Tu solicitud se ha recibido correctamente y está siendo procesada.</p>
+    
+    <!-- Puntos Informativos -->
+    <div class="steps-container">
+      
+      <div class="step-item">
+        <div class="step-icon">📲</div>
+        <div class="step-text">
+          <strong>Contacto con tus familiares en Cuba</strong>
+          <p>En las próximas 24 horas nos pondremos en contacto con la persona responsable de recibir los productos en Cuba para coordinar todos los detalles de la entrega.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-icon">📄</div>
+        <div class="step-text">
+          <strong>Verificación de Pago y Factura</strong>
+          <p>Una vez verifiquemos tu pago correctamente, te enviaremos tu factura digital y tu pedido quedará listo para ser despachado.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bloque WhatsApp de Contacto -->
+    <div class="whatsapp-box">
+      <div class="whatsapp-info">
+        <strong>¿Tienes alguna duda o consulta?</strong>
+        <div>Escríbenos directamente a nuestra línea oficial.</div>
+      </div>
+      <a href="https://wa.me/15617054199" target="_blank" class="whatsapp-btn">
+        <span>💬</span> WhatsApp
+      </a>
+    </div>
+
+    <!-- Botón Principal (Estructura Solicitada) -->
+    <li class="nav-item">
+      <!-- Magic Trigger is here: href="index.html" -->
+      <a class="nav-link active" href="index.html" id="magic-trigger-btn">Volver al Inicio</a>
+    </li>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const magicBtn = document.getElementById("magic-trigger-btn");
+
+      magicBtn.addEventListener("click", () => {
+        console.log("Confirmado: Redirigiendo a la página principal...");
+      });
+    });
+  </script>
+
+</body>
+</html>
