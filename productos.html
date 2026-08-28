@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CubaMax - Productos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #049899;
+            --primary-dark: #037a7a;
+            --secondary-color: #ffffff;
+            --accent-color: #e0f2f1;
+            --text-color: #2c3e50;
+            --text-muted: #6c757d;
+            --light-color: #f8f9fa;
+            --dark-color: #1e293b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --border-radius: 12px;
+            --admin-bg: rgba(30, 41, 59, 0.95);
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            background-color: #f0f2f5;
+            overflow-x: hidden;
+        }
+        
+        /* Navbar Styling */
+        .navbar {
+            background-color: var(--secondary-color) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+            color: var(--dark-color);
+        }
+        
+        .navbar-brand span {
+            color: var(--primary-color);
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-color) !important;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            transition: all 0.3s ease;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color) !important;
+            background-color: var(--accent-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.6rem 1.8rem;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(4, 152, 153, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(4, 152, 153, 0.4);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 15px rgba(4, 152, 153, 0.3);
+        }
+
+        /* Search Bar */
+        .search-box {
+            background: white;
+            border-radius: 50px;
+            padding: 0.3rem 0.5rem 0.3rem 1.2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 20px rgba(4, 152, 153, 0.15);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            box-shadow: none !important;
+        }
+
+        /* Sidebar Filters */
+        .category-filter {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px;
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.25rem;
+            border-radius: 8px !important;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        .list-group-item.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(4, 152, 153, 0.25);
+        }
+
+        /* Product Cards */
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-img-wrapper {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .card-img-top {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-img-top {
+            transform: scale(1.08);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .category-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            color: var(--dark-color);
+            flex-grow: 1;
+        }
+        
+        .card-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+        
+        .badge-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+        }
+
+        .badge-featured {
+            background-color: var(--warning-color);
+            color: #fff;
+        }
+
+        .badge-sale {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+        
+        .product-quick-view {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-color);
+            text-align: center;
+            padding: 0.8rem;
+            font-weight: 600;
+            transition: bottom 0.3s ease;
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        
+        .card:hover .product-quick-view {
+            bottom: 0;
+        }
+
+        .section-title {
+            color: var(--dark-color);
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(4, 152, 153, 0.15);
+        }
+        
+        .form-range::-webkit-slider-thumb {
+            background: var(--primary-color);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Modal */
+        .product-modal .modal-content {
+            border-radius: 20px;
+            border: none;
+            overflow: hidden;
+        }
+        
+        .product-gallery-main {
+            border-radius: 15px;
+            background: #f8f9fa;
+            padding: 1rem;
+            object-fit: contain;
+        }
+        
+        .gallery-thumb {
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        
+        .gallery-thumb.active {
+            border-color: var(--primary-color);
+            transform: scale(0.95);
+        }
+
+        .quantity-selector {
+            border: 2px solid #e2e8f0;
+        }
+        
+        .quantity-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* Cart Notification */
+        .cart-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 25px rgba(4, 152, 153, 0.4);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cart-notification:hover {
+            transform: scale(1.1) rotate(-10deg);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 2px solid white;
+        }
+
+        /* ADMIN MODE STYLES */
+        .admin-modal-content {
+            background: #1e293b;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .admin-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .admin-input:focus {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(4, 152, 153, 0.3);
+        }
+
+        .admin-input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        .admin-select {
+            background-color: rgba(255,255,255,0.05);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .admin-select option {
+            background-color: #1e293b;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color) !important;
+        }
+
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .category-filter {
+                position: static;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Cuba<span>Max</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html" id="secret-trigger-btn">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="productos.html">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="como-funciona.html">Cómo Funciona</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="testimonios.html">Testimonios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contacto.html">Contacto</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Checkout.html">Checkout</a>
+                </li>
+                <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                    <a href="Checkout.html" class="btn btn-primary rounded-pill px-4">Hacer Pedido</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Products Section -->
+<section class="py-5" id="productos">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="section-title" data-aos="fade-up">Nuestros Productos</h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                Descubre nuestra variedad de combos, víveres, vehículos, bicicletas, plantas eléctricas y soluciones EcoFlow. 
+                Calidad garantizada y entrega segura para tus seres queridos en Cuba.
+            </p>
+        </div>
+
+        <!-- Buscador Principal en Tiempo Real -->
+        <div class="row justify-content-center mb-5" data-aos="fade-up" data-aos-delay="150">
+            <div class="col-lg-8">
+                <div class="input-group search-box">
+                    <span class="input-group-text bg-transparent border-0 text-muted fs-5">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="product-search" class="form-control fs-6" placeholder="Escribe para buscar productos (ej. aceite, gas, combo, moto)...">
+                    <button class="btn btn-primary px-4 rounded-pill" type="button" onclick="applyFilters()">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4" data-aos="fade-right" data-aos-delay="200">
+                <div class="category-filter">
+                    <h5 class="fw-bold mb-3">Categorías</h5>
+                    <div class="list-group mb-4">
+                        <a href="#" class="list-group-item list-group-item-action active" data-category="all">
+                            <i class="fas fa-th-large me-2"></i> Todo
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-category="Cuba Max">
+                            <i class="fas fa-box-open me-2"></i> Cuba Max
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-category="Vehículos">
+                            <i class="fas fa-motorcycle me-2"></i> Vehículos
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-category="Bicicletas">
+                            <i class="fas fa-bicycle me-2"></i> Bicicletas
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-category="Plantas Eléctricas">
+                            <i class="fas fa-bolt me-2"></i> Plantas Eléctricas
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-category="EcoFlow">
+                            <i class="fas fa-solar-panel me-2"></i> EcoFlow
+                        </a>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h5 class="fw-bold mb-3">Filtros</h5>
+                    <div class="mb-4">
+                        <label for="price-range" class="form-label d-flex justify-content-between">
+                            <span>Precio Máximo</span>
+                            <span class="fw-bold text-primary" id="price-value">$4000</span>
+                        </label>
+                        <input type="range" class="form-range" min="0" max="4000" value="4000" id="price-range" oninput="document.getElementById('price-value').textContent = '$' + this.value">
+                    </div>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="featured-filter">
+                        <label class="form-check-label" for="featured-filter">Solo destacados</label>
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="sale-filter">
+                        <label class="form-check-label" for="sale-filter">En oferta</label>
+                    </div>
+                    
+                    <button class="btn btn-outline-primary w-100" id="apply-filters">Aplicar Filtros</button>
+                    
+                    <button class="btn btn-sm btn-link text-muted w-100 mt-2" onclick="resetCustomProducts()" style="font-size: 0.7rem; text-decoration: none;">Restaurar valores de fábrica</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <span class="text-muted fw-medium">Mostrando <span id="showing-products" class="text-dark fw-bold">0</span> productos</span>
+                    <div class="dropdown">
+                        <button class="btn btn-light bg-white border dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            Ordenar por
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" onclick="sortProducts('price-asc')">Precio: Menor a Mayor</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="sortProducts('price-desc')">Precio: Mayor a Menor</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="sortProducts('name')">Nombre (A-Z)</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row g-4" id="products-container">
+                    <!-- Los productos se cargarán aquí dinámicamente -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="empty-state" class="text-center py-5 d-none">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4>No se encontraron productos</h4>
+                    <p class="text-muted">Intenta cambiar tu palabra de búsqueda o ajustar tus filtros.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cart Notification -->
+<div class="cart-notification" id="cartNotification" onclick="goToCheckout()">
+    <i class="fas fa-shopping-cart"></i>
+    <div class="cart-count" id="cartCount">0</div>
+</div>
+
+<!-- Product Modal -->
+<div class="modal fade product-modal" id="productModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-6 mb-4 mb-md-0">
+                        <div class="product-gallery">
+                            <img src="" class="product-gallery-main w-100 mb-3" id="modal-product-img" alt="Producto">
+                            <div class="product-gallery-thumbs d-flex gap-2 overflow-auto" id="modal-thumbnails"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="badge bg-light text-primary mb-2" id="modal-category">Categoría</span>
+                        <h3 class="fw-bold mb-2" id="modal-product-title"></h3>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="text-warning small me-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-muted small">(Calidad Garantizada)</span>
+                        </div>
+                        <h2 class="price mb-4" id="modal-product-price"></h2>
+                        
+                        <p class="text-muted mb-4" id="modal-product-description"></p>
+                        
+                        <div class="bg-light p-3 rounded-3 mb-4">
+                            <h6 class="fw-bold mb-2"><i class="fas fa-box-open me-2 text-primary"></i>Contenido del paquete:</h6>
+                            <ul class="mb-0 ps-3 small text-secondary" id="modal-product-content"></ul>
+                        </div>
+                        
+                        <div class="d-flex align-items-end gap-3">
+                            <div class="w-auto">
+                                <label class="form-label small fw-bold">Cantidad</label>
+                                <div class="quantity-selector d-flex align-items-center rounded-pill bg-white">
+                                    <button type="button" class="btn btn-link text-dark text-decoration-none px-3 quantity-btn" onclick="updateModalQuantity(-1)">-</button>
+                                    <input type="text" class="form-control border-0 text-center p-0" style="width: 40px;" id="modal-quantity" value="1" readonly>
+                                    <button type="button" class="btn btn-link text-dark text-decoration-none px-3 quantity-btn" onclick="updateModalQuantity(1)">+</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary flex-grow-1 rounded-pill py-2" onclick="addModalToCart()">
+                                <i class="fas fa-cart-plus me-2"></i> Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HIDDEN ADMIN MODALS -->
+<div class="modal fade" id="adminAuthModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content admin-modal-content">
+            <div class="modal-body text-center p-4">
+                <i class="fas fa-user-secret fa-3x mb-3 text-info animate__animated animate__pulse animate__infinite"></i>
+                <h5 class="mb-3">Modo Administrador</h5>
+                <p class="small text-white-50 mb-3">Ingrese código de acceso</p>
+                <input type="password" id="adminPinInput" class="form-control admin-input text-center fs-4 letter-spacing-2 mb-3" maxlength="6" placeholder="******">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-info fw-bold" onclick="verifyAdminPin()">Acceder</button>
+                    <button class="btn btn-outline-light btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="adminPanelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content admin-modal-content">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title"><i class="fas fa-rocket me-2 text-info"></i>Lanzar Nuevo Producto</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="newProductForm">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label class="form-label text-info small fw-bold">Nombre del Producto</label>
+                            <input type="text" class="form-control admin-input" id="newProdName" required placeholder="Ej: Combo Especial de Aceite">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-info small fw-bold">Precio ($)</label>
+                            <input type="number" class="form-control admin-input" id="newProdPrice" required step="0.01" placeholder="0.00">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label text-info small fw-bold">Categoría</label>
+                            <select class="form-select admin-select" id="newProdCategory" required>
+                                <option value="Cuba Max">Cuba Max</option>
+                                <option value="Vehículos">Vehículos</option>
+                                <option value="Bicicletas">Bicicletas</option>
+                                <option value="Plantas Eléctricas">Plantas Eléctricas</option>
+                                <option value="EcoFlow">EcoFlow</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label text-info small fw-bold">Etiquetas</label>
+                            <div class="d-flex gap-3 pt-2">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="newProdFeatured">
+                                    <label class="form-check-label text-white-50" for="newProdFeatured">Destacado</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="newProdSale">
+                                    <label class="form-check-label text-white-50" for="newProdSale">Oferta</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-info small fw-bold">Imagen del Producto</label>
+                            <ul class="nav nav-tabs border-secondary mb-2" id="imgTab" role="tablist">
+                                <li class="nav-item">
+                                    <button class="nav-link active text-white bg-transparent border-0" data-bs-toggle="tab" data-bs-target="#tab-upload" type="button">Subir Foto</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link text-white-50 bg-transparent border-0" data-bs-toggle="tab" data-bs-target="#tab-url" type="button">URL de Imagen</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-upload">
+                                    <input type="file" class="form-control admin-input" id="newProdImgFile" accept="image/*">
+                                    <div class="form-text text-white-50">La imagen se guardará localmente en su navegador.</div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-url">
+                                    <input type="url" class="form-control admin-input" id="newProdImgUrl" placeholder="https://ejemplo.com/imagen.jpg">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-info small fw-bold">Descripción</label>
+                            <textarea class="form-control admin-input" id="newProdDesc" rows="3" required placeholder="Descripción atractiva del producto..."></textarea>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-info small fw-bold">Contenido (separar por comas)</label>
+                            <input type="text" class="form-control admin-input" id="newProdContent" placeholder="Ej: Entrega rápida, Producto garantizado, Calidad superior">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-secondary">
+                <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-info fw-bold px-4" onclick="saveNewProduct()">
+                    <i class="fas fa-paper-plane me-2"></i> LANZAR PRODUCTO
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-white py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <h4 class="fw-bold mb-4">Cuba<span style="color: var(--primary-color);">Max</span></h4>
+                <p class="text-secondary mb-4">Conectando familias a través de vehículos, alimentos y soluciones energéticas de calidad. Envíos seguros, rápidos y confiables a toda Cuba.</p>
+                <div class="social-links">
+                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h5 class="fw-bold mb-4">Enlaces Rápidos</h5>
+                <ul class="list-unstyled text-secondary">
+                    <li class="mb-2"><a href="index.html" class="text-decoration-none text-secondary hover-white">Inicio</a></li>
+                    <li class="mb-2"><a href="productos.html" class="text-decoration-none text-secondary hover-white">Productos</a></li>
+                    <li class="mb-2"><a href="como-funciona.html" class="text-decoration-none text-secondary hover-white">Cómo Funciona</a></li>
+                    <li class="mb-2"><a href="testimonios.html" class="text-decoration-none text-secondary hover-white">Testimonios</a></li>
+                    <li><a href="contacto.html" class="text-decoration-none text-secondary hover-white">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h5 class="fw-bold mb-4">Atención al Cliente</h5>
+                <ul class="list-unstyled text-secondary">
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-secondary hover-white">Preguntas Frecuentes</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-secondary hover-white">Rastrear Pedido</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-secondary hover-white">Términos y Condiciones</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-secondary hover-white">Política de Privacidad</a></li>
+                    <li><a href="#" class="text-decoration-none text-secondary hover-white">Soporte 24/7</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h5 class="fw-bold mb-4">Newsletter</h5>
+                <p class="text-secondary">Suscríbete para recibir ofertas exclusivas.</p>
+                <form class="mt-3">
+                    <div class="input-group">
+                        <input type="email" class="form-control border-0" placeholder="Tu email" required>
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </form>
+                <div class="mt-4 opacity-75">
+                    <i class="fab fa-cc-visa fa-2x me-2"></i>
+                    <i class="fab fa-cc-mastercard fa-2x me-2"></i>
+                    <i class="fab fa-cc-paypal fa-2x"></i>
+                </div>
+            </div>
+        </div>
+        <hr class="my-5 border-secondary">
+        <div class="text-center text-secondary">
+            <p class="mb-0">&copy; 2026 CubaMax. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 50
+    });
+
+    let currentModalProduct = null;
+    let currentModalPrice = 0;
+    let currentModalImage = '';
+    let modalQuantity = 1;
+    let allProducts = [];
+    let filteredProducts = [];
+    let currentCategory = 'all';
+
+    // ==========================================
+    // BASE DE DATOS DE PRODUCTOS
+    // ==========================================
+   
+
+
+
+
+
+
+
+
+
+
+
+const defaultProducts = [
+ {
+    "id": 3,
+    "name": "Combo Super Oferta CubaMax",
+    "category": "Supermercado",
+    "price": 130,
+    "image": "1 (4).jpg",
+    "description": "Combo Super Oferta CubaMax: 2 cajas de aceite de 24 pomos, 1 paquete de azúcar de 30 paquetes, 1 paquete de arroz de 30 paquetes, 1 paquete de pollo de 10 libras. Envío gratis hasta la puerta de tu casa en 3 a 5 días. Todo lo que necesitas para tu hogar.",
+    "content": ["2 Caja de Aceite de 24 Pomos", "1 Paquete de Azúcar de 30 Paquete", "1 Paquete de Arroz de 30 Paquete", "1 Paquete de Pollo de 10 Libras"],
+    "thumbnails": ["1 (4).jpg"],
+    "featured": true
+  },
+
+  { 
+    id: 1116, 
+    name: "Combo Alimentario", 
+    category: "Cuba Max", 
+    price: 110, 
+    image: "rr.webp", 
+    description: "Combo de dos cajas de aceite de 24 unidades 50 Kg de  arroz una paca de frijoles con 30 paquetes de 1kg y 40 libras de pollo ",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 27, 
+    name: "Combo 5 Pomos de Aceite - 5L c/u", 
+    category: "Cuba Max", 
+    price: 70.00, 
+    image: "Gemini_Generated_Image_dh2qd1dh2qd1dh2q.jpg", 
+    description: "¡OFERTA ESPECIAL! Pack de 5 pomos de aceite vegetal de 5 litros cada uno. Excelente rendimiento para tu familia con entregas disponibles para toda Cuba.",
+    content: ["5 Pomos de Aceite", "5 Litros por Pomo", "Aceite Vegetal de Calidad", "Entregas en Toda Cuba", "Precio Especial $70", "Pedido por WhatsApp"], 
+    thumbnails: [], 
+    featured: true 
+  },
+
+{ 
+    id: 25, 
+    name: "Valita de Gas LP - 10 KG", 
+    category: "Cuba Max", 
+    price: 50.00, 
+    image: " content.jpg_202608150415.jpeg", 
+    description: "¡OFERTA ESPECIAL! Tanque de gas LP de 10 kg. Perfecto para uso doméstico. Precio especial por tiempo limitado. ¡Única oportunidad! Contacto directo por WhatsApp.",
+    content: ["Capacidad 10 KG", "Gas LP de Calidad", "Uso Doméstico", "Entrega Inmediata", "Precio Especial $50", "Pedido por WhatsApp"], 
+    thumbnails: [], 
+    featured: true 
+},
+{
+    id: 26, 
+    name: "Valita de Gas LP - 20 KG", 
+    category: "Cuba Max", 
+    price: 75.00, 
+    image: "content_(1).jpg_202608150415.jpeg", 
+    description: "¡OFERTA ESPECIAL! Tanque de gas LP de 20 kg. Ideal para familias medianas. Mayor duración y rendimiento. Precio especial Cuba Max. Pedido directo por WhatsApp.",
+    content: ["Capacidad 20 KG", "Gas LP de Calidad", "Mayor Duración", "Uso Residencial", "Precio Especial $75", "Entrega Rápida"], 
+    thumbnails: [], 
+    featured: true 
+},
+{ 
+    id: 27, 
+    name: "Valita de Gas LP - 45 KG", 
+    category: "Cuba Max", 
+    price: 120.00, 
+    image: "content_(2).jpg_202608150414.jpeg", 
+    description: "¡OFERTA ESPECIAL! Tanque de gas LP de 45 kg. Máxima capacidad para mayor autonomía. Perfecto para uso intensivo. Mejor precio garantizado. Contacto directo WhatsApp.",
+    content: ["Capacidad 45 KG", "Gas LP de Calidad", "Máxima Autonomía", "Uso Intensivo", "Precio Especial $120", "Ideal para Negocios"], 
+    thumbnails: [], 
+    featured: true 
+},
+
+
+{
+  "id": 500,
+  "name": "Caja de 15 Pomos Aceite Vegetal CubaMax 1L",
+  "category": "Aceite Vegetal",
+  "price": 50,
+  "image": "CubaMax_vegetable_oil_promotiona…_202608250725 (1).jpeg",
+  "description": "Aceite Vegetal CubaMax 1L. El mejor para tu familia. Caja de 15 unidades (1L cada una). Precio especial solo $50 USD. Compra segura, pago después de entrega, entrega en 7-10 días.",
+  "content": ["15 Pomos de 1L", "Aceite Vegetal Refinado", "0% Azúcares", "15% Ácido máx."],
+  "thumbnails": ["aceite_caja15_thumb.jpg"],
+  "featured": true
+},
+
+{
+  "id": 502,
+  "name": "Caja de 20 Pomos Aceite Vegetal CubaMax 1L",
+  "category": "Aceite Vegetal",
+  "price": 65,
+  "image": "CubaMax_vegetable_oil_promotiona…_202608250725.jpeg",
+  "description": "Aceite Vegetal CubaMax 1L. ¡Gran oferta de aceite! Caja de 20 unidades (1L cada una). Precio especial solo $65 USD. Compra segura, pago después de entrega, entrega en 7-10 días.",
+  "content": ["20 Pomos de 1L", "Aceite Vegetal Refinado", "0% Azúcares", "15% Ácido máx."],
+  "thumbnails": ["aceite_caja20_thumb.jpg"],
+  "featured": true
+},
+
+{
+  "id": 503,
+  "name": "Caja de 30 Pomos Aceite Vegetal CubaMax 1L",
+  "category": "Aceite Vegetal",
+  "price": 80,
+  "image": "CubaMax_cooking_oil_promotional_…_202608250725.jpeg",
+  "description": "Aceite Vegetal CubaMax 1L. Oferta exclusiva para hogar o negocio. Caja de 30 unidades (1L cada una). Precio especial solo $80 USD. Compra segura, pago después de entrega, entrega en 7-10 días.",
+  "content": ["30 Pomos de 1L", "Aceite Vegetal Refinado", "0% Azúcares", "15% Ácido máx."],
+  "thumbnails": ["aceite_caja30_thumb.jpg"],
+  "featured": true
+},
+
+
+
+  {
+    "id": 1,
+    "name": "Kit Solar #4 CubaMax 6kW",
+    "category": "Energía Solar",
+    "price": 3900,
+    "image": "1 (6).jpg",
+    "description": "Energía solar para un futuro sostenible con CubaMax. Kit completo de 6kW: 1 Inversor Híbrido 48V 6kW 110-220V, 1 Batería 10kWh LiFePO4 48V, 18 Paneles Solares 580W, Kit de Protección Eléctrica, Kit de Instalación con cables y conectores, y Montaje incluido.",
+    "content": ["1 Inversor Híbrido 48V 6kW 110-220V", "1 Batería 10kWh LiFePO4 48V", "18 Paneles Solares 580W", "Kit de Protección Eléctrica", "Kit de Instalación con cables y conectores", "Montaje profesional incluido"],
+    "thumbnails": ["1 (6).jpg"],
+    "featured": true
+  },
+  {
+    "id": 2,
+    "name": "Kit Solar #3 CubaMax 5kW",
+    "category": "Energía Solar",
+    "price": 2500,
+    "image": "1 (5).jpg",
+    "description": "Energía solar para un futuro sostenible con CubaMax. Kit completo de 5kW: 1 Inversor Híbrido 48V 5kW 110-220V, 1 Batería 10kWh LiFePO4 48V, 12 Paneles Solares 590W, Kit de Protección Eléctrica, Kit de Instalación con cables y conectores, y Montaje incluido.",
+    "content": ["1 Inversor Híbrido 48V 5kW 110-220V", "1 Batería 10kWh LiFePO4 48V", "12 Paneles Solares 590W", "Kit de Protección Eléctrica", "Kit de Instalación con cables y conectores", "Montaje profesional incluido"],
+    "thumbnails": ["1 (5).jpg"],
+    "featured": true
+  },
+  
+
+  {
+    "id": 4,
+    "name": "Kit Solar CubaMax 5 Paneles",
+    "category": "Energía Solar",
+    "price": 945,
+    "image": "grok_1787016793319.jpg",
+    "description": "Energía confiable, ahorro total e independencia energética con CubaMax. Kit de 5 paneles de 640W + Inversor híbrido 5kW + Dos Baterías de litio 24V 200Ah. Precio especial de $950 USD.",
+    "content": ["5 Paneles Solares 640W", "Inversor Híbrido 4kW", "2 Batería de Litio 24V 200Ah"],
+    "thumbnails": ["1 (2).jpg"],
+    "featured": true
+  },
+  {
+    "id": 5,
+    "name": "Combo de Comida Rápidez CubaMax",
+    "category": "Supermercado",
+    "price": 160,
+    "image": "1 (3).jpg",
+    "description": "Combo de Comida Rápidez CubaMax: 10 libras de cerdo, 10 libras de ovejo, 2 paquetes de pollo entero, 5 paquetes de salchicho, 10 paquetes de arroz, 4 paquetes de frijol, 5 paquetes de café, 20 pomos de aceite. Precio $160 USD. Vías de pago: CAHS, Zelle, IBAM.",
+    "content": ["10 Libras de Cerdo", "10 Libras de Ovejo", "2 Paquete de Pollo", "5 Paquete de Salchicho", "10 Paquete de Arroz", "4 Paquete de Frijol", "5 Paquete de Café", "20 Pomos de Aceite"],
+    "thumbnails": ["1 (3).jpg"],
+    "featured": true
+  },
+  {
+    "id": 6,
+    "name": "Kit Solar CubaMax 12 Paneles",
+    "category": "Energía Solar",
+    "price": 2350,
+    "image": "1 (7).jpg",
+    "description": "Kit CubaMax Solare: 12 Paneles de 640W + Inversor Híbrido 10kW + 4 Baterías 24V 200Ah LiFePO4. Precio especial $2350 USD con garantía de calidad.",
+    "content": ["12 Paneles Solares 640W", "Inversor Híbrido 10kW", "4 Baterías 24V 200Ah LiFePO4"],
+    "thumbnails": ["1 (7).jpg"],
+    "featured": true
+  },
+  {
+    "id": 7,
+    "name": "Kit Solar CubaMax 6 Paneles",
+    "category": "Energía Solar",
+    "price": 1450,
+    "image": "1 (1).jpg",
+    "description": "Kit CubaMax Solare: 6 Paneles de 640W + Inversor Híbrido 4kW + 2 Baterías 24V 200Ah LiFePO4. Precio $1450 USD.",
+    "content": ["6 Paneles Solares 640W", "Inversor Híbrido 4kW", "2 Baterías 24V 200Ah LiFePO4"],
+    "thumbnails": ["1 (1).jpg"],
+    "featured": true
+  },
+  {
+    "id": 8,
+    "name": "Kit Solar #2 CubaMax 5kW",
+    "category": "Energía Solar",
+    "price": 1450,
+    "image": "1 (8).jpg",
+    "description": "Energía solar para un futuro sostenible con CubaMax. Kit completo de 5kW: 1 Inversor Híbrido 48V 5kW 110-220V, 1 Batería 5kWh LiFePO4 48V, 8 Paneles Solares 590W, Kit de Protección Eléctrica, Kit de Instalación con cables y conectores, y Montaje incluido.",
+    "content": ["1 Inversor Híbrido 48V 5kW 110-220V", "1 Batería 5kWh LiFePO4 48V", "8 Paneles Solares 590W", "Kit de Protección Eléctrica", "Kit de Instalación con cables y conectores", "Montaje profesional incluido"],
+    "thumbnails": ["1 (8).jpg"],
+    "featured": true
+  },
+
+
+
+  {
+    id: 152,
+    name: "Estación de Energía Portátil EcoFlow con Panel Solar",
+    category: "energia",
+    price: 349,
+    image: "ecoflowoo.jpeg",
+    description: "Generador solar portátil con pantalla LCD, puertos USB-A y USB-C, y 6 tomas CA. Incluye panel solar plegable de carga rápida. Envío a toda Cuba en 7 días.",
+    content: [],
+    thumbnails: [],
+    featured: false
+  },
+  {
+    id: 153,
+    name: "Bicimoto TOPMAO Serie X + Combo EcoFlow",
+    category: "vehiculos",
+    price: 649,
+    image: "biicmotoflow.jpeg",
+    description: "Bicimoto TOPMAO Serie X con motor de 3000W y autonomía de 90km. Incluye estación de energía EcoFlow (1024Wh, 1800W de salida) y paneles solares plegados. Disponible en varios colores.",
+    content: [],
+    thumbnails: [],
+    featured: true
+  },
+
+
+
+
+  { 
+    id: 2, 
+    name: "Panel Solar 500W Monocristalino", 
+    category: "Energía Solar", 
+    price: 119.99, 
+    image: "panel-solar-500w-tensite-monocristalino-perc.jpg", 
+    description: "¡EL MÁS VENDIDO DE CUBA 2026! Panel solar monocristalino de 500W con tecnología PERC de última generación. Eficiencia superior al 22%, rinde incluso con nubes y días parcialmente nublados. Solución inmediata para combatir los apagones. Instalación sencilla en techo o estructura metálica. Incluye certificación internacional de calidad.",
+    content: ["500W de Potencia Real", "Tecnología Monocristalina PERC", "Eficiencia Superior 22%", "Garantía 25 Años", "Certificación Internacional", "Resistente a Clima Tropical"], 
+    thumbnails: ["panel-solar-500w-mono.jpg"],
+    featured: true 
+  },
+
+  { 
+    id: 3, 
+    name: "Panel Solar 500W Bifacial", 
+    category: "Energía Solar", 
+    price: 129.99, 
+    image: "JA_Solar_510W_All-Black_Bifacial_Solar_Panel_Front_and_Rear_View.webp", 
+    description: "¡TECNOLOGÍA DEL FUTURO HOY! Panel bifacial de 500W que capta energía solar por AMBOS LADOS. Produce hasta 25% más energía que un panel tradicional por el mismo precio. Ideal para techos claros, superficies reflectantes o estructuras elevadas. Tecnología de punta en energía renovable al mejor precio del mercado.",
+    content: ["500W de Potencia Nominal", "Tecnología Bifacial Dual", "25% Más Producción Energética", "Doble Captación Solar Frontal y Trasera", "Alta Eficiencia 21%", "Garantía 25 Años"], 
+    thumbnails: ["panel-solar-500w-bifacial.jpg"], 
+    featured: true 
+  },
+
+  { 
+    id: 4, 
+    name: "Panel Solar 600W Bifacial", 
+    category: "Energía Solar", 
+    price: 139.99, 
+    image: "images (788).jpg", 
+    description: "¡MÁXIMA POTENCIA DISPONIBLE! Panel solar bifacial de 600W, el más potente del mercado cubano. Genera hasta 25% más energía gracias a su doble captación. Ideal para sistemas grandes, hogares de alto consumo o negocios. La mayor producción energética por metro cuadrado. Resistente a vientos huracanados y granizo.",
+    content: ["600W de Potencia Real", "Tecnología Bifacial Premium", "Máxima Producción por Panel", "Ideal Sistemas de Gran Escala", "Resistencia a Huracanes", "Vida Útil +30 Años"], 
+    thumbnails: ["panel-solar-600w-bifacial.jpg"], 
+    featured: true 
+  },
+
+  { 
+    id: 5, 
+    name: "Bicicleta Eléctrica Plegable Lelekuai T1 14\"", 
+    category: "Bicicletas", 
+    price: 399.99, 
+    image: "T1-4_1_1.webp", 
+    description: "¡LA VIRAL DE TIKTOK AL MEJOR PRECIO! La bicicleta eléctrica más popular de Cuba 2026. Motor potente de 600W, velocidad hasta 45 km/h, autonomía de 60-70 km con una sola carga. Batería de litio extraíble de 48V 35Ah (puedes llevarla a tu casa para cargarla). Se pliega en 10 segundos, cabe en cualquier espacio. Perfecta para evitar el transporte público.",
+    content: ["Motor 600W de Alta Potencia", "Batería 48V 35Ah Extraíble", "Velocidad hasta 45 km/h", "Autonomía 60-70 km", "Rodado 14\" Plegable", "Carga Completa en 4-6 Horas"], 
+    thumbnails: ["lelekuai-t1-14-fold.jpg"], 
+    featured: true 
+  },
+
+  { 
+    id: 6, 
+    name: "Eco Flow Delta 2", 
+    category: "EcoFlow", 
+    price: 285.00, 
+    image: "descargaaaa.webp", 
+    description: "¡EL MÁS BARATO DE CUBA! Estación de energía portátil EcoFlow Delta 2 con 1024Wh de capacidad. Adiós a los apagones: carga tu refrigerador, TV, ventiladores y electrodomésticos esenciales. Tecnología X-Stream de carga ultrarrápida (0-80% en 50 minutos). Salida AC de 1800W para conectar múltiples aparatos simultáneamente. Control total desde tu smartphone.",
+    content: ["1024Wh Capacidad Total", "Carga X-Stream Ultrarrápida", "Salida AC 1800W", "Control por App WiFi", "Batería LFP de Larga Vida", "Múltiples Puertos USB-C y AC"], 
+    thumbnails: [], 
+    featured: true 
+  },
+
+  { 
+    id: 7, 
+    name: "Inversor Híbrido MUST 3000W 48V MPPT", 
+    category: "Energía Solar", 
+    price: 349.99, 
+    image: "pv29hp-001.webp", 
+    description: "¡EL MÁS VENDIDO DE CUBA! Inversor híbrido MUST de 3000W con controlador MPPT integrado. Compatible con paneles solares, red eléctrica y baterías. Onda sinusoidal pura para proteger tus electrodomésticos. Sistema 48V ideal para hogares de alto consumo. Monitoreo en tiempo real y configuración automática de fuentes de energía según disponibilidad.",
+    content: ["3000W de Potencia Real", "48V Sistema de Alta Eficiencia", "MPPT Integrado 80A", "Onda Sinusoidal Pura", "Compatible Solar + Red + Batería", "Monitoreo WiFi Incluido"], 
+    thumbnails: ["inversor-must-3000w-48v.jpg"], 
+    featured: true 
+  },
+
+  { 
+    id: 8, 
+    name: "Bicicleta Bucatti Evolution", 
+    category: "Bicicletas", 
+    price: 449.99, 
+    image: "1111.png", 
+    description: "¡LA MÁS BUSCADA EN CUBA! Bicimoto eléctrica Bucatti Evolution con motor de 750W. Ahorra gasolina y muévete rápido por la ciudad. Batería de litio de larga duración 48V, velocidad crucero de 40 km/h. Diseño robusto, suspensión delantera y trasera, frenos de disco. Perfecta para distancias medias y uso diario. Incluye luces LED y portaequipajes.",
+    content: ["Motor 750W de Alta Potencia", "Litio 48V Larga Duración", "Velocidad Crucero 40 km/h", "Autonomía 70-80 km", "Suspensión Doble", "Frenos de Disco Delanteros y Traseros"], 
+    thumbnails: ["bcpwr1000.png"],
+    featured: true 
+  },
+
+  { 
+    id: 9, 
+    name: "Moto Topmaq Lithium", 
+    category: "Vehículos", 
+    price: 549.99, 
+    image: "TOPMAQ-1-600x600 (2).jpg", 
+    description: "¡GANGA DEL AÑO! Scooter eléctrico Topmaq 1000W con batería de Litio de alta capacidad. Cero mantenimiento, máxima potencia y velocidad hasta 50 km/h. Autonomía extendida de 80-100 km. Ideal para transporte urbano, entregas y uso diario. Diseño moderno, cómodo asiento doble, gran capacidad de carga. La solución definitiva ante la crisis de combustible.",
+    content: ["1000W de Fuerza Motriz", "Batería Litio 48V de Alta Capacidad", "Autonomía Extendida 80-100 km", "Velocidad Máxima 50 km/h", "Cero Mantenimiento", "Asiento Doble Cómodo"], 
+    thumbnails: ["TOPMAQ-1-600x600 (2).jpg"], 
+    featured: true 
+  },
+
+  { 
+    id: 10, 
+    name: "Bicicleta Eléctrica Plegable Tamobyke 600W", 
+    category: "Bicicletas", 
+    price: 379.99, 
+    image: "M7-black_1.webp", 
+    description: "¡OFERTA FLASH IMPERDIBLE! Bicicleta eléctrica plegable Tamobyke con suspensión mejorada y batería extraíble. Motor de 600W, velocidad hasta 40 km/h, autonomía de 50-60 km. Comodidad y potencia por menos de $400. Diseño ergonómico, se pliega en segundos, perfecta para apartamento o espacios reducidos. Incluye cargador rápido y kit de herramientas.",
+    content: ["Motor 600W Silencioso", "Batería Extraíble de Litio", "Suspensión Mejorada Doble", "Diseño Ergonómico Confortable", "Velocidad hasta 40 km/h", "Autonomía 50-60 km"], 
+    thumbnails: ["tamobyke-500w-fold.jpg"],
+    featured: true 
+  },
+
+  { 
+    id: 11, 
+    name: "Bicicleta Eléctrica Plegable DYU 600W 20\"", 
+    category: "Bicicletas", 
+    price: 449.99, 
+    image: "61XkTA9uIhL._AC_UF350,350_QL80_.jpg", 
+    description: "¡SUPER GANGA! Bicicleta eléctrica plegable DYU de 600W con batería de litio extraíble. Rodado de 20 pulgadas para mayor estabilidad y confort. Desplázate por la ciudad sin sudar, velocidad hasta 45 km/h, autonomía de 60-70 km. Diseño compacto plegable, cabe en el maletero del carro o en cualquier rincón. Perfecta para transporte multimodal (bus + bici).",
+    content: ["Motor 600W de Alta Eficiencia", "Batería Litio Extraíble 48V", "Rodado 20\" Mayor Estabilidad", "Diseño Compacto Plegable", "Velocidad hasta 45 km/h", "Autonomía 60-70 km"], 
+    thumbnails: ["dyu-500w-20-fold.jpg"],
+    featured: true 
+  },
+
+  // ========== TIER 2: MUY ALTA DEMANDA ==========
+
+ 
+
+ 
+
+
+  
+
+
+
+  { 
+    id: 26, 
+    name: "Batería Litio LiFePO4 100Ah 51.2V (5.12 kWh)", 
+    category: "Energía Solar", 
+    price: 429.99, 
+    image: "61fGRXkd2uL._AC_UF894,1000_QL80_.jpg", 
+    description: "¡GANGA EN LITIO! Batería de litio LiFePO4 de 100Ah y 51.2V (5.12 kWh) con más de 6000 ciclos de vida útil. Dura más de 10 años de uso diario. Compatible con todos los inversores híbridos del mercado. Tecnología segura, no inflamable, sin mantenimiento. Perfecta para sistemas solares residenciales y respaldo energético.",
+    content: ["100Ah 51.2V", "Capacidad 5.12 kWh", "Tecnología LiFePO4 Segura", "+6000 Ciclos de Vida", "Compatible con Inversores", "Sin Mantenimiento"], 
+    thumbnails: ["bateria-lifepo4-100ah-51v.jpg"],
+    featured: true 
+  },
+
+  { 
+    id: 27, 
+    name: "Moto Unizuki Rayan", 
+    category: "Vehículos", 
+    price: 999.99, 
+    image: "imagesaaa.jpg", 
+    description: "¡LA MÁS POPULAR DE CUBA! Moto eléctrica Unizuki Rayan con motor de 3000W y batería de litio 72V. Sube cualquier loma, velocidad hasta 70 km/h, autonomía de 100-120 km. Diseño deportivo, frenos de disco, suspensión hidráulica. La moto eléctrica más vendida por su potencia y confiabilidad. Perfecta para transporte diario y largas distancias.",
+    content: ["3000W Potentes de Motor", "Litio 72V de Alta Gama", "Diseño Deportivo Moderno", "Velocidad hasta 70 km/h", "Autonomía 100-120 km", "Frenos de Disco Hidráulicos"], 
+    thumbnails: ["Moto-unizuki-rayan-azul.webp"],
+    featured: true 
+  },
+
+  { 
+    id: 28, 
+    name: "Inversor Híbrido PowMr 3000W 48V MPPT 60A", 
+    category: "Energía Solar", 
+    price: 279.99, 
+    image: "619pYxXppwL.jpg_BO30,255,255,255_UF750,750_SR1910,1000,0,C_QL100_.jpg", 
+    description: "¡PRECIO DE FÁBRICA! Inversor híbrido PowMr 3000W con controlador MPPT de 60A. Sistema 48V ideal para hogares de alta demanda energética. Alta eficiencia superior al 95%, onda sinusoidal pura, compatible con paneles solares, red eléctrica y baterías. Monitoreo en tiempo real y configuración automática de fuentes de energía.",
+    content: ["3000W de Potencia Real", "48V Sistema de Alta Eficiencia", "MPPT 60A Integrado", "Ideal Residencial y Comercial", "Alta Eficiencia >95%", "Onda Sinusoidal Pura"], 
+    thumbnails: ["inversor-powmr-3000w.jpg"],
+    featured: true 
+  },
+
+  { 
+    id: 29, 
+    name: "Inversor Híbrido PowMr 3000W 24V MPPT 60A", 
+    category: "Energía Solar", 
+    price: 269.99, 
+    image: "23803c38-4f0e-42bd-88ca-d459b3aa080f.__AC_SR166,182___.jpg", 
+    description: "¡EL MÁS ECONÓMICO! Versión de 24V del inversor PowMr 3000W con MPPT de 60A. Excelente para instalaciones medianas y bolsillos ajustados. Mismas características premium a menor precio. Compatible con paneles solares, red eléctrica y baterías. Onda sinusoidal pura para proteger tus electrodomésticos. Ideal para hogares de consumo medio.",
+    content: ["3000W de Potencia Real", "24V Sistema Económico", "MPPT 60A Integrado", "Alta Eficiencia >95%", "Ideal Instalaciones Medianas", "Onda Sinusoidal Pura"], 
+    thumbnails: ["inversor-powmr-3000w-24v.jpg"],
+    featured: true 
+  },
+
+  // ===== PRODUCTOS BÁSICOS Y ALIMENTOS (RENUNMERADOS) =====
+
+  { 
+    id: 30, 
+    name: "Saco de arroz blanco (25 kg)", 
+    category: "granos", 
+    price: 24, 
+    image: "Saco-de-arroz-VIP-Rice-1.jpg", 
+    description: "Arroz de grano largo de alta calidad, importado de Tailandia o Vietnam. Ideal para el consumo diario.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 31, 
+    name: "Saco de arroz blanco (50 kg)", 
+    category: "granos", 
+    price: 46, 
+    image: "qh1S6LqyQfrEAVestnROurKiFo2TnYZ9Gg4ZYEVG.jpeg", 
+    description: "Arroz de grano largo de alta calidad en presentación de 50 kg. Ideal para familias numerosas.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 32, 
+    name: "Saco de frijoles negros (25 kg)", 
+    category: "granos", 
+    price: 33, 
+    image: "000090585l.jpg", 
+    description: "Frijoles negros secos de primera calidad, esenciales para preparar el tradicional congrí cubano.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 33, 
+    name: "Saco de chícharos (25 kg)", 
+    category: "granos", 
+    price: 30, 
+    image: "images (5).jpg", 
+    description: "Chícharos secos de alta calidad, ricos en proteínas y fibra. Ideal para potajes.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+ 
+  { 
+    id: 36, 
+    name: "Harina de trigo (25 kg)", 
+    category: "granos", 
+    price: 23, 
+    image: "981014514l.png", 
+    description: "Harina de trigo multiusos para panadería y repostería. Ideal para pan y dulces.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 37, 
+    name: "Azúcar blanca (25 kg)", 
+    category: "granos", 
+    price: 21, 
+    image: "Azucar-blanca-Paramonga-25-kg.webp", 
+    description: "Azúcar blanca refinada en saco de 25 kg. Perfecta para endulzar bebidas y postres.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 38, 
+    name: "Azúcar morena (50 kg)", 
+    category: "granos", 
+    price: 38, 
+    image: "10307.webp", 
+    description: "Azúcar morena o turbinada en saco de 50 kg. Endulzante natural con melaza.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 39, 
+    name: "Saco de frijoles rojos / colorados (25 kg)", 
+    category: "granos", 
+    price: 32, 
+    image: "rojo.jpg", 
+    description: "Frijoles rojos de alta calidad seleccionados cuidadosamente. Ideales para preparar potajes tradicionales, moros y cristianos, y guisos cubanos auténticos. Producto limpio y listo para cocinar.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 40, 
+    name: "Saco de lentejas (25 kg)", 
+    category: "granos", 
+    price: 21, 
+    image: "images (6).jpg", 
+    description: "Lentejas secas seleccionadas de primera calidad, ricas en proteínas, hierro y fibra natural. Perfectas para sopas nutritivas, guisos y platos saludables para toda la familia.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 41, 
+    name: "Arroz integral (25 kg)", 
+    category: "granos", 
+    price: 26, 
+    image: "nomen-web-Arroz-integral.jpg", 
+    description: "Arroz integral de grano largo, más nutritivo que el arroz blanco tradicional. Mayor contenido de fibra, vitaminas y minerales. Ideal para una alimentación balanceada y saludable.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 42, 
+    name: "Pasta spaghetti (caja 24 paquetes de 500g)", 
+    category: "granos", 
+    price: 24, 
+    image: "yzt.jpg", 
+    description: "Pasta spaghetti de excelente calidad y cocción perfecta. Caja con 24 paquetes de 500g cada uno. Producto ideal para restaurantes, negocios y familias numerosas. Textura firme y sabor auténtico.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+    
+  // ===== CARNES Y PESCADOS =====
+  { 
+    id: 43, 
+    name: "Pollo congelado (caja 40 lb)", 
+    category: "carnes", 
+    price: 33, 
+    image: "images.jpg", 
+    description: "Pollo congelado de alta calidad. Presentación en caja de 40 lb con piernas y muslos.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 44, 
+    name: "Atún enlatado (caja 48 latas)", 
+    category: "carnes", 
+    price: 46, 
+    image: "atun_1.webp", 
+    description: "Atún enlatado en agua o aceite. Caja de 48 latas de 170g. Alto en proteínas.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 45, 
+    name: "Picadillo de res (caja 12 un.)", 
+    category: "carnes", 
+    price: 20, 
+    image: "Picadillo-de-Res-500g-1.jpg", 
+    description: "Picadillo de res en tubos. Caja de 12 unidades de 740g. Precocido.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 46, 
+    name: "Carne de cerdo en trozos (caja 20 kg)", 
+    category: "carnes", 
+    price: 38, 
+    image: "0352922-2.jpg", 
+    description: "Carne de cerdo fresca congelada en trozos variados de alta calidad. Presentación en caja de 20 kg. Excelente para guisos tradicionales, asados, lechón y platos de la cocina cubana.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 47, 
+    name: "Salchichón / mortadela (caja 10 kg)", 
+    category: "carnes", 
+    price: 12, 
+    image: "38a2df9f740067a7b9730d33947dfb00220c0fb5-scaled.jpg", 
+    description: "Salchichón o mortadela de calidad premium en bloque. Caja de 10 kg de producto fresco. Ideal para sándwiches, desayunos, meriendas y comida rápida casera.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+    
+  // ===== LÁCTEOS =====
+  { 
+    id: 48, 
+    name: "Leche en polvo (caja 12 kg)", 
+    category: "lacteos", 
+    price: 15, 
+    image: "images (1).jpg", 
+    description: "Leche en polvo entera. Caja con 12 bolsas de 1 kg. Rica en calcio y vitaminas.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 49, 
+    name: "Mantequilla (caja 20 lb)", 
+    category: "lacteos", 
+    price: 22, 
+    image: "descargar.jpg", 
+    description: "Mantequilla sin sal. Caja con 20 unidades de 1 lb. Ideal para repostería.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 50, 
+    name: "Huevos (cartón 30 un.)", 
+    category: "lacteos", 
+    price: 3.5, 
+    image: "images (2).jpg", 
+    description: "Huevos frescos de gallina, en cartón sellado de 30 unidades.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 51, 
+    name: "Queso crema (caja 24 un. de 226g)", 
+    category: "lacteos", 
+    price: 18, 
+    image: "wnd5qewarrpfil0vfbzu.webp", 
+    description: "Queso crema suave, cremoso y de excelente sabor. Caja con 24 unidades de 226g cada una. Perfecto para untar en pan, preparar postres, cheesecakes y recetas de repostería.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 52, 
+    name: "Queso blanco / fresco (caja 10 kg)", 
+    category: "lacteos", 
+    price: 19, 
+    image: "10650382014842.jpeg", 
+    description: "Queso blanco fresco de buena calidad y sabor auténtico. Presentación en caja de 10 kg. Ideal para el consumo diario, ensaladas, acompañamiento de comidas y platos tradicionales cubanos.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+    
+  // ===== CONSERVAS =====
+  { 
+    id: 53, 
+    name: "Puré de Tomate (caja 24 latas)", 
+    category: "conservas", 
+    price: 20, 
+    image: "7157YdABWkL.jpg", 
+    description: "Puré de tomate enlatado. Caja de 24 latas de 400g. Básico para salsas.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 54, 
+    name: "Frijoles negros (caja 12 latas)", 
+    category: "conservas", 
+    price: 7, 
+    image: "71KQ-DF4DXL.jpg", 
+    description: "Frijoles negros precocidos. Caja de 12 latas de 500g. Listos para servir.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 55, 
+    name: "Café molido (caja 24 paq.)", 
+    category: "conservas", 
+    price: 32, 
+    image: "descargar (2).jpg", 
+    description: "Café molido 100% puro. Caja con 24 paquetes de 250g. Aroma intenso.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+    
+  // ===== BEBIDAS =====
+  { 
+    id: 56, 
+    name: "Refrescos (caja 24 latas)", 
+    category: "bebidas", 
+    price: 7, 
+    image: "E6f788487e27b42f1b6e4cc989ee0f3f0o.jpg", 
+    description: "Refrescos enlatados variados. Caja de 24 latas de 355ml.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 57, 
+    name: "Ron Havana Club (caja 12)", 
+    category: "bebidas", 
+    price: 25, 
+    image: "06c5b342-aa9a-4ec0-ae5c-76f8a0c99390.8f40cdd1027170f43e3d6fb59033930d.webp", 
+    description: "Ron Havana Club Añejo. Caja de 12 botellas de 1 litro.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 58, 
+    name: "Jugo en polvo Tang (caja 6)", 
+    category: "bebidas", 
+    price: 7, 
+    image: "762221056568.6.webp", 
+    description: "Jugo en polvo Tang. Caja con 6 paquetes grandes. Rico en vitamina C.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 59, 
+    name: "Agua mineral (caja 24 botellas 1.5L)", 
+    category: "bebidas", 
+    price: 12, 
+    image: "img.webp", 
+    description: "Agua mineral natural purificada de alta calidad. Caja con 24 botellas de 1.5 litros cada una. Producto esencial para la hidratación diaria de toda la familia.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 60, 
+    name: "Cerveza (caja 24 latas o botellas)", 
+    category: "bebidas", 
+    price: 11, 
+    image: "images (7).jpg", 
+    description: "Cerveza lager refrescante de calidad reconocida. Caja con 24 unidades (latas o botellas según disponibilidad). Perfecta para reuniones, celebraciones y momentos de descanso.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 61, 
+    name: "Malta (caja 24 botellas)", 
+    category: "bebidas", 
+    price: 10, 
+    image: "880fc954-5fc7-4530-9e52-5b41cec58285.jpg", 
+    description: "Malta no alcohólica refrescante y energética. Caja con 24 botellas. Bebida tradicional con sabor auténtico, rica en vitaminas del complejo B. Ideal para toda la familia.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 62, 
+    name: "Jugo de naranja (caja 6)", 
+    category: "bebidas", 
+    price: 8.5, 
+    image: "61vzyOR9Q1L._AC_UF894,1000_QL80_.jpg", 
+    description: "Jugo de naranja natural, rico en vitamina C. Caja con 6 paquetes grandes de alta concentración. refrescante y nutritivo para niños y adultos.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+    
+  // ===== PAQUETES ESPECIALES =====
+  { 
+    id: 63, 
+    name: "Pañales (paq. 50 un.)", 
+    category: "paquetes", 
+    price: 12, 
+    image: "651172.jpg", 
+    description: "Pañales desechables Pampers Talla M. Absorción superior.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 64, 
+    name: "Detergente Ariel (caja 4 sacos)", 
+    category: "paquetes", 
+    price: 16, 
+    image: "00750043515907L.webp", 
+    description: "Detergente en polvo Ariel. Caja con 4 sacos de 5 kg.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 65, 
+    name: "Pasta dental (caja 6 un.)", 
+    category: "paquetes", 
+    price: 3, 
+    image: "descargar (3).jpg", 
+    description: "Pasta dental Colgate. Caja con 6 tubos. Protección anticaries.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 66, 
+    name: "Papel higiénico (paquete 12 rollos x 6)", 
+    category: "paquetes", 
+    price: 27, 
+    image: "images (8).jpg", 
+    description: "Papel higiénico suave de doble hoja, cómodo y absorbente. Paquete económico con 72 rollos totales (12 paquetes x 6 rollos). Producto esencial para el hogar con excelente relación calidad-precio.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 67, 
+    name: "Jabón de baño (caja 36 unidades)", 
+    category: "paquetes", 
+    price: 11, 
+    image: "D_NQ_NP_737405-MLA51644694440_092022-O.webp", 
+    description: "Jabón de baño tradicional de alta calidad. Caja con 36 unidades individuales. Aroma fresco y agradable, produce buena espuma y deja la piel limpia y suavemente perfumada.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 68, 
+    name: "Shampoo (caja 12 botellas)", 
+    category: "paquetes", 
+    price: 25, 
+    image: "shopping.webp", 
+    description: "Shampoo para uso familiar con fórmula suave y nutritiva. Caja con 12 botellas de presentación completa. Limpia profundamente el cabello, lo deja brillante, manejable y con aroma agradable.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+          
+  { 
+    id: 69, 
+    name: "Toallas sanitarias (caja 12 paquetes)", 
+    category: "paquetes", 
+    price: 17, 
+    image: "descarga.webp", 
+    description: "Toallas sanitarias de alta absorción y máxima comodidad. Caja con 12 paquetes. Ofrecen protección diaria confiable, son suaves con la piel y brindan seguridad durante todo el día.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 70, 
+    name: "Cloro / lavandina (caja 12 botellas 1L)", 
+    category: "paquetes", 
+    price: 12, 
+    image: "D_NQ_NP_908234-MLU78759131598_092024-O (1).webp", 
+    description: "Cloro concentrado de alta eficacia para desinfección y limpieza profunda del hogar. Caja con 12 botellas de 1 litro cada una. Elimina el 99.9% de gérmenes y bacterias. Producto esencial para la higiene.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+    
+  // ===== ELECTRODOMÉSTICOS =====
+  { 
+    id: 71, 
+    name: "Olla arrocera eléctrica", 
+    category: "electrodomesticos", 
+    price: 18.99, 
+    image: "shopping (3).webp", 
+    description: "Olla arrocera eléctrica de alta eficiencia con capacidad de 1.8 litros, ideal para familias. Cuenta con función de cocción automática y mantenimiento del calor, garantizando un arroz suelto y perfectamente cocinado en cada uso. Su recubrimiento antiadherente de alta calidad facilita la limpieza y evita que los alimentos se peguen. Incluye taza medidora y espátula.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 72, 
+    name: "Olla Reyna de presión (5.5 L)", 
+    category: "electrodomesticos", 
+    price: 22.99, 
+    image: "descarga (2).webp", 
+    description: "Olla de presión Reyna de aluminio de alta resistencia con capacidad de 5.5 litros. Diseñada para cocciones rápidas y seguras, conserva todos los nutrientes y sabores de los alimentos. Equipada con válvulas de seguridad de última generación, tapa de cierre hermético y asas ergonómicas resistentes al calor. Un clásico indispensable en la cocina para guisos, carnes y legumbres en la mitad de tiempo.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 73, 
+    name: "Cafetera eléctrica italiana", 
+    category: "electrodomesticos", 
+    price: 24.99, 
+    image: "cafetera.png", 
+    description: "Cafetera eléctrica de estilo italiano con capacidad para 6 tazas. Fabricada en aluminio de alta calidad con base de calentamiento rápida y eficiente. Prepara un café intenso, aromático y con el sabor tradicional en cuestión de minutos. Incluye filtro permanente, es muy fácil de usar, desmontar y limpiar. Perfecta para empezar el día con energía y disfrutar del mejor café en casa.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 74, 
+    name: "Picatodo / Procesadora de alimentos", 
+    category: "electrodomesticos", 
+    price: 14.99, 
+    image: "descarga.jpg", 
+    description: "Picatodo eléctrico multifuncional con motor de alta potencia y vaso de plástico resistente de gran capacidad. Ideal para triturar, picar y mezclar carnes, vegetales, frutas, hielo y especias en segundos. Sus cuchillas de acero inoxidable garantizan un corte uniforme, preciso y duradero. Diseño compacto, fácil de almacenar y con sistema de seguridad que impide su funcionamiento si no está bien ensamblado.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 75, 
+    name: "Air Fryer (Freidora de aire) 5L", 
+    category: "electrodomesticos", 
+    price: 39.99, 
+    image: "descarga (1).jpg", 
+    description: "Freidora de aire (Air Fryer) de gran capacidad (5 litros) con tecnología de circulación de aire caliente de alta velocidad. Permite cocinar alimentos crujientes y deliciosos usando hasta un 85% menos de grasa que una freidora tradicional. Panel táctil digital con 8 programas preestablecidos, temporizador y apagado automático. Ideal para carnes, pescados, papas fritas y postres, de forma rápida, saludable y sin olores fuertes en la cocina.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 76, 
+    name: "Fogón de inducción 3500W (dos hornillas)", 
+    category: "electrodomesticos", 
+    price: 54.99, 
+    image: "image-37ba97bfdefa4d9c9fff59ef5c5f819f.webp", 
+    description: "Cocina de inducción portátil de doble hornilla con una potencia total de 3500W, lo que permite cocinar dos platos simultáneamente con un calentamiento ultra rápido y eficiente. Superficie de cristal vitrocerámico de fácil limpieza y alta resistencia. Cuenta con control de temperatura preciso, temporizador, bloqueo de seguridad para niños y función de detección de recipientes. Compatible solo con ollas y sartenes de fondo magnético. Ahorra energía y mantiene la cocina fresca.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 77, 
+    name: "Refrigerador de dos puertas (No Frost)", 
+    category: "electrodomesticos", 
+    price: 449, 
+    image: "shopping (4).webp", 
+    description: "Refrigerador de dos puertas con tecnología No Frost que evita la formación de escarcha y mantiene la temperatura uniforme en todo el interior. Gran capacidad de almacenamiento con congelador superior y múltiples compartimentos en la nevera para organizar tus alimentos. Compresor de bajo consumo energético y funcionamiento silencioso. Iluminación LED interior, estantes de vidrio templado ajustables y diseño elegante en acero inoxidable que se adapta a cualquier cocina moderna.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  // ===== MATERIALES DE CONSTRUCCIÓN =====
+  { 
+    id: 78, 
+    name: "Saco de cemento (42.5 kg)", 
+    category: "construccion", 
+    price: 10, 
+    image: "28062023131434.webp", 
+    description: "Cemento gris de alta resistencia para construcción.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 79, 
+    name: "Bloques de hormigón (20 unidades)", 
+    category: "construccion", 
+    price: 8.3, 
+    image: "bloque-15x20x50-300x173.jpg", 
+    description: "Bloques de hormigón estándar de alta resistencia, medidas 20x15x50 cm (las más utilizadas en Cuba). Paquete de 20 unidades. Ideales para construcción de paredes, muros y obras civiles de cualquier tipo.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  },
+
+  { 
+    id: 80, 
+    name: "Pintura blanca interior (tanqueta x 4 10L)", 
+    category: "construccion", 
+    price: 23, 
+    image: "shopping (1).webp", 
+    description: "Pintura blanca para interiores, lavable y con excelente poder cubriente. Paquete de 4 galones de alta calidad. Acabado profesional, duradero y fácil de aplicar en cualquier superficie interior.",
+    content: [], 
+    thumbnails: [],
+    featured: false 
+  }, 
+
+  // ===== COMBOS DE ALIMENTOS =====
+ 
+
+  // ===== ENERGÍA SOLAR ADICIONAL =====
+  
+  // ========== TIER 3: ALTA DEMANDA ==========
+
+  { 
+    id: 96, 
+    name: "Bicicleta Eléctrica Lelekuai T1 Pro Heavy-Duty", 
+    category: "Bicicletas", 
+    price: 599.99, 
+    image: "42_GS5_1500_x_1500 (1).webp", 
+    description: "¡LA BESTIA DEL TRANSPORTE! Bicicleta eléctrica Lelekuai T1 Pro con fat tires (llantas anchas) y motor de 740W. Soporta hasta 500 lbs (227 kg) de carga. Ideal para trabajo pesado, transporte de mercancías o personas de gran tamaño. Autonomía extendida, suspensión reforzada, frenos hidráulicos. La bicicleta más robusta del mercado cubano.",
+    content: ["Motor 740W de Alta Potencia", "Batería 720Wh de Larga Duración", "Fat Tires Todo Terreno", "Capacidad 500 lbs (227 kg)", "Autonomía Extendida 80-100 km", "Frenos Hidráulicos Premium"], 
+    thumbnails: ["lelekuai-t1-pro-heavy.jpg"], 
+    featured: true 
+  },
+
+  { 
+    id: 97, 
+    name: "Bicicleta Eléctrica Tamobyke 750W 2026", 
+    category: "Bicicletas", 
+    price: 649.99, 
+    image: "71NKqvd5SDL._AC_UF1000,1000_QL80_.jpg", 
+    description: "¡OFERTA DE TEMPORADA 2026! Bicicleta eléctrica Tamobyke con diseño moderno 2026 y motor de 750W. Uso intensivo garantizado, velocidad hasta 50 km/h, autonomía de 80-90 km. Batería extraíble de alta capacidad, suspensión mejorada, frenos de disco. Perfecta para distancias largas y uso diario intensivo. El modelo más actualizado del mercado.",
+    content: ["Motor 750W de Alta Eficiencia", "Batería Extraíble de Alta Capacidad", "Autonomía 80-90 km", "Modelo 2026 Diseño Moderno", "Suspensión Mejorada", "Velocidad hasta 50 km/h"], 
+    thumbnails: ["tamobyke-750w-2026.jpg"],
+    featured: true 
+  },
+
+  { 
+    id: 98, 
+    name: "Bicicleta Eléctrica DYU 1000W 2026", 
+    category: "Bicicletas", 
+    price: 699.99, 
+    image: "61rCm+t1WhL._AC_UF1000,1000_QL80_.jpg", 
+    description: "¡MODELO 2026 EN LIQUIDACIÓN! La bicicleta eléctrica más rápida y potente: motor de 1000W, vuela a 60 km/h. Batería extraíble de 48V-72V, autonomía de 70-90 km. Diseño aerodinámico, suspensión hidráulica, frenos de disco. Perfecta para quienes necesitan velocidad y potencia. La opción premium para transporte rápido y eficiente.",
+    content: ["Motor 1000W de Máxima Potencia", "Batería 48V-72V Extraíble", "Velocidad hasta 60 km/h", "Autonomía 70-90 km", "Suspensión Hidráulica", "Frenos de Disco Premium"], 
+    thumbnails: ["61rCm+t1WhL._AC_UF1000,1000_QL80_.jpg"],
+    featured: true 
+  },
+
+  { 
+    id: 99, 
+    name: "Batería Litio LiFePO4 200Ah 51.2V (10 kWh)", 
+    category: "Energía Solar", 
+    price: 849.99, 
+    image: "Solar-Battery.png", 
+    description: "¡LA MÁS DEMANDADA! Batería de litio LiFePO4 de 200Ah y 51.2V (10 kWh) para hogares. Respaldo energético diario imbatible, alimenta toda tu casa durante apagones prolongados. Más de 6000 ciclos de vida útil (10+ años). Tecnología segura, sin mantenimiento, compatible con todos los inversores. La inversión definitiva en independencia energética.",
+    content: ["200Ah 51.2V", "Capacidad 10 kWh", "Tecnología LiFePO4 Segura", "+6000 Ciclos de Vida", "Ideal para Hogares Completos", "Respaldo Energético Diario"], 
+    thumbnails: ["bateria-lifepo4-200ah-51v.jpg"], 
+    featured: true 
+  },
+
+ 
+
+  { 
+    id: 102, 
+    name: "Planta Eléctrica ECOGEN", 
+    category: "Plantas Eléctricas", 
+    price: 449.00, 
+    image: "images345.jpg", 
+    description: "¡LIQUIDACIÓN DE ALMACÉN! Generador de gasolina ECOGEN de 2500W, súper silencioso y eficiente. El más vendido en Cuba por su confiabilidad y bajo consumo de combustible. Motor 4 tiempos de arranque fácil, ideal para neveras, ventiladores, luces y electrodomésticos esenciales. Perfecto para emergencias y respaldo energético cuando falla la red.",
+    content: ["2500W Reales de Potencia", "Motor 4T Silencioso", "Arranque Fácil Manual", "Bajo Consumo de Combustible", "Ideal para Emergencias", "Garantía de 1 Año"], 
+    thumbnails: ["ECO PLANTA 25002.jpg"], 
+    featured: true 
+  },
+
+  { 
+    id: 103, 
+    name: "Triciclo Eléctrico Topman 2000W Carga/Pasajeros", 
+    category: "Triciclos Eléctricos", 
+    price: 3499.99, 
+    image: "China-Cheap-Electric-Cargo-Tricycle-Delivery-Electric-Adult-Tricycles.png", 
+    description: "¡EL MÁS ECONÓMICO DEL MERCADO! Triciclo eléctrico Topman con motor de 2000W, asientos plegables y capacidad de carga pesada. ¡Haz tu negocio ya! Perfecto para transporte de mercancías, delivery, pasajeros o uso comercial. Autonomía de 100-120 km, batería de litio 72V 75Ah, velocidad hasta 45 km/h. La inversión perfecta para emprendedores cubanos.",
+    content: ["Motor 2000W de Alta Potencia", "Batería Litio 72V 75Ah", "Autonomía 100-120 km", "Asientos Plegables", "Capacidad Pasajeros + Carga", "Ideal para Negocios"], 
+    thumbnails: ["triciclo-topman-2000w.jpg"], 
+    featured: true 
+  },
+
+  // ========== TIER 4: DEMANDA MODERADA-ALTA ==========
+
+  { 
+    id: 104, 
+    name: "Scooter Lance Havana Classic 50cc", 
+    category: "Scooters", 
+    price: 899.99, 
+    image: "Gallery_Havana125_24-770x498-1-770x466.jpg", 
+    description: "¡LA MÁS ECONÓMICA! Scooter Lance Havana Classic versión 50cc, fácil de manejar y súper ahorradora en combustible. Diseño retro clásico, perfecta para principiantes y uso urbano. Bajo consumo de gasolina, mantenimiento sencillo. La opción más económica para usuarios que prefieren scooters de gasolina de baja cilindrada.",
+    content: ["Motor 50cc", "Diseño Retro", "Fácil de Manejar", "Bajo Consumo", "Súper Ahorradora", "Ideal Principiantes"], 
+    thumbnails: ["lance-havana-50.jpg"],
+    featured: false 
+  },
+
+  { 
+    id: 105, 
+    name: "Scooter Lexzuki 125cc", 
+    category: "Scooters", 
+    price: 1699.99, 
+    image: "suzuki-burgman-street-125ex-2023-estudio-3.jpeg", 
+    description: "¡MODERNA Y BARATA! Scooter Lexzuki 125cc de diseño vanguardista. Muévete por la ciudad con estilo. Motor de 125cc, diseño moderno, ideal para ciudad. Buena relación calidad-precio, confort superior, fácil manejo. La opción moderna para usuarios que buscan scooters de gasolina con diseño contemporáneo.",
+    content: ["Motor 125cc", "Diseño Moderno", "Ideal para Ciudad", "Buena Relación Calidad-Precio", "Confort Superior", "Fácil Manejo"], 
+    thumbnails: ["lexzuki-125.jpg"],
+    featured: false 
+  },
+
+  { 
+    id: 106, 
+    name: "Scooter Italica 125cc", 
+    category: "Scooters", 
+    price: 1699.99, 
+    image: "f642f5_d108e0d6b9bc4144bdd35a9d4a57bf0a~mv2.png", 
+    description: "¡LUJO ITALIANO EN LIQUIDACIÓN! Scooter Italica 125cc con acabados premium y confort superior para el día a día. Diseño italiano elegante, motor de 125cc, alta calidad de construcción. La opción premium para usuarios que buscan scooters de gasolina con lujo y confort. Perfecta para uso diario con estilo.",
+    content: ["Motor 125cc", "Estilo Italiano", "Acabados Premium", "Confort Superior", "Alta Calidad", "Lujo y Elegancia"], 
+    thumbnails: ["italica-125.jpg"],
+    featured: false 
+  },
+
+{ 
+    id: 107, 
+    name: "Aire Acondicionado Split CH", 
+    category: "electrodomesticos", 
+    price: 269, 
+    image: "split.jpg", 
+    description: "Aire acondicionado Split tipo pared marca CH de alta eficiencia energética. Incluye unidad interior y exterior, control remoto y mangueras de instalación. Ideal para enfriar habitaciones de manera rápida y silenciosa.",
+    content: ["Unidad Interior + Exterior", "Control Remoto Incluido", "Alta Eficiencia Energética", "Instalación Fácil"], 
+    thumbnails: [],
+    featured: true 
+},
+
+{ 
+    id: 108, 
+    name: "Minicompresor Portátil Inflador de Neumáticos", 
+    category: "herramientas", 
+    price: 24.99, 
+    image: "minicompresor.webp", 
+    description: "Minicompresor portátil digital multifuncional con pantalla LCD. Ideal para inflar neumáticos de autos, motos, bicicletas, pelotas y más. Incluye maletín, accesorios y cables de alimentación (12V y 110V). Compacto y potente.",
+    content: ["Pantalla Digital LCD", "Infla y Desinfla", "Compatible 12V y 110V", "Maletín + Accesorios Incluidos"], 
+    thumbnails: [],
+    featured: true 
+},
+
+{ 
+    id: 109, 
+    name: "Horno Eléctrico Empotrable Vevor", 
+    category: "electrodomesticos", 
+    price: 149.99, 
+    image: "horno.webp", 
+    description: "Horno eléctrico empotrable de acero inoxidable Vevor de alta calidad. Gran capacidad, control de temperatura preciso y diseño moderno. Perfecto para hornear, asar y gratinar con excelentes resultados.",
+    content: ["Acero Inoxidable Premium", "Control Analógico Preciso", "Puerta de Vidrio Templado", "Fácil Limpieza"], 
+    thumbnails: [],
+    featured: true 
+},
+
+
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function loadAllProducts() {
+        const storedProducts = JSON.parse(localStorage.getItem('customProducts')) || [];
+        return [...defaultProducts, ...storedProducts];
+    }
+
+    function resetCustomProducts() {
+        if(confirm('¿Estás seguro de borrar todos los productos personalizados?')) {
+            localStorage.removeItem('customProducts');
+            location.reload();
+        }
+    }
+
+    // ==========================================
+    // ADMIN SECRET LOGIC
+    // ==========================================
+    let secretClickCount = 0;
+    let secretClickTimer;
+    const SECRET_PIN = "222324";
+    const SECRET_TRIGGER_ID = "secret-trigger-btn";
+
+    document.addEventListener('DOMContentLoaded', function() {
+        allProducts = loadAllProducts();
+        
+        const triggerBtn = document.getElementById(SECRET_TRIGGER_ID);
+        if (triggerBtn) {
+            triggerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                secretClickCount++;
+                clearTimeout(secretClickTimer);
+                
+                if (secretClickCount >= 5) {
+                    secretClickCount = 0;
+                    showAdminAuth();
+                } else {
+                    secretClickTimer = setTimeout(() => {
+                        if (secretClickCount === 1) {
+                            window.location.href = "index.html";
+                        }
+                        secretClickCount = 0;
+                    }, 400);
+                }
+            });
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryParam = urlParams.get('category');
+        
+        if (categoryParam) {
+            filterByCategory(categoryParam);
+        } else {
+            filterByCategory('all');
+        }
+        
+        updateCartCount();
+        
+        // Listener del Buscador en tiempo real
+        const searchInput = document.getElementById('product-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', applyFilters);
+        }
+
+        document.getElementById('apply-filters').addEventListener('click', applyFilters);
+        
+        document.querySelectorAll('.list-group-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const category = this.getAttribute('data-category');
+                filterByCategory(category);
+                if(window.innerWidth < 992) {
+                    document.getElementById('products-container').scrollIntoView({behavior: 'smooth'});
+                }
+            });
+        });
+    });
+
+    function showAdminAuth() {
+        const modal = new bootstrap.Modal(document.getElementById('adminAuthModal'));
+        document.getElementById('adminPinInput').value = '';
+        modal.show();
+    }
+
+    function verifyAdminPin() {
+        const input = document.getElementById('adminPinInput').value;
+        if (input === SECRET_PIN) {
+            bootstrap.Modal.getInstance(document.getElementById('adminAuthModal')).hide();
+            const panelModal = new bootstrap.Modal(document.getElementById('adminPanelModal'));
+            panelModal.show();
+            showToast('Acceso de Administrador Concedido', 'success');
+        } else {
+            document.getElementById('adminPinInput').classList.add('animate__animated', 'animate__shakeX');
+            setTimeout(() => {
+                document.getElementById('adminPinInput').classList.remove('animate__animated', 'animate__shakeX');
+                document.getElementById('adminPinInput').value = '';
+            }, 1000);
+            showToast('Código Incorrecto', 'danger');
+        }
+    }
+
+    function saveNewProduct() {
+        const name = document.getElementById('newProdName').value;
+        const price = parseFloat(document.getElementById('newProdPrice').value);
+        const category = document.getElementById('newProdCategory').value;
+        const featured = document.getElementById('newProdFeatured').checked;
+        const sale = document.getElementById('newProdSale').checked;
+        const desc = document.getElementById('newProdDesc').value;
+        const contentStr = document.getElementById('newProdContent').value;
+        const content = contentStr.split(',').map(s => s.trim()).filter(s => s);
+        
+        const fileInput = document.getElementById('newProdImgFile');
+        const urlInput = document.getElementById('newProdImgUrl');
+        let imageSrc = 'https://via.placeholder.com/300';
+
+        if (urlInput.value.trim() !== "") {
+            imageSrc = urlInput.value;
+            finishSaveProduct(name, price, category, featured, sale, desc, content, imageSrc);
+        } else if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imageSrc = e.target.result;
+                finishSaveProduct(name, price, category, featured, sale, desc, content, imageSrc);
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            finishSaveProduct(name, price, category, featured, sale, desc, content, imageSrc);
+        }
+    }
+
+    function finishSaveProduct(name, price, category, featured, sale, desc, content, image) {
+        if (!name || isNaN(price)) {
+            showToast('Por favor complete el nombre y el precio', 'warning');
+            return;
+        }
+
+        const newProduct = {
+            id: Date.now(),
+            name,
+            category,
+            price,
+            image,
+            description: desc,
+            content,
+            thumbnails: [image],
+            featured,
+            sale
+        };
+
+        const customProducts = JSON.parse(localStorage.getItem('customProducts')) || [];
+        customProducts.push(newProduct);
+        localStorage.setItem('customProducts', JSON.stringify(customProducts));
+
+        allProducts.push(newProduct);
+        
+        applyFilters();
+        
+        bootstrap.Modal.getInstance(document.getElementById('adminPanelModal')).hide();
+        document.getElementById('newProductForm').reset();
+        
+        showToast('Producto lanzado con éxito', 'success');
+        window.scrollTo({ top: document.getElementById('products-container').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // CARRITO Y LÓGICA DE FILTRADO / BÚSQUEDA
+    // ==========================================
+
+    function getCart() {
+        const cart = JSON.parse(localStorage.getItem('cubamax-cart'));
+        return cart || [];
+    }
+
+    function saveCart(cart) {
+        localStorage.setItem('cubamax-cart', JSON.stringify(cart));
+        updateCartCount();
+    }
+
+    function updateCartCount() {
+        const cart = getCart();
+        const count = cart.reduce((total, item) => total + item.quantity, 0);
+        const badge = document.getElementById('cartCount');
+        badge.textContent = count;
+        badge.classList.add('animate__animated', 'animate__bounceIn');
+        setTimeout(() => badge.classList.remove('animate__animated', 'animate__bounceIn'), 1000);
+    }
+
+    function addToCart(productName, price, image) {
+        const cart = getCart();
+        const existingProduct = cart.find(item => item.name === productName);
+        
+        if (existingProduct) {
+            existingProduct.quantity += 1;
+        } else {
+            cart.push({ name: productName, price: price, quantity: 1, image: image });
+        }
+        
+        saveCart(cart);
+        showToast(`${productName} agregado al carrito`, 'success');
+    }
+
+    function updateModalQuantity(change) {
+        modalQuantity += change;
+        if (modalQuantity < 1) modalQuantity = 1;
+        document.getElementById('modal-quantity').value = modalQuantity;
+    }
+
+    function addModalToCart() {
+        if (currentModalProduct) {
+            const cart = getCart();
+            const existingProduct = cart.find(item => item.name === currentModalProduct);
+            
+            if (existingProduct) {
+                existingProduct.quantity += modalQuantity;
+            } else {
+                cart.push({ name: currentModalProduct, price: currentModalPrice, quantity: modalQuantity, image: currentModalImage });
+            }
+            saveCart(cart);
+            $('#productModal').modal('hide');
+            showToast(`${modalQuantity}x ${currentModalProduct} agregado(s)`, 'success');
+            modalQuantity = 1;
+        }
+    }
+
+    function showToast(message, type = 'primary') {
+        const existingToasts = document.querySelectorAll('.toast-container');
+        existingToasts.forEach(el => el.remove());
+
+        const toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+        toastContainer.style.zIndex = '1070';
+        
+        const bgClass = type === 'success' ? 'bg-success' : (type === 'warning' ? 'bg-warning' : (type === 'danger' ? 'bg-danger' : 'bg-primary'));
+        
+        toastContainer.innerHTML = `
+            <div class="toast align-items-center text-white ${bgClass} border-0 show" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body fw-medium">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'} me-2"></i> ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(toastContainer);
+        setTimeout(() => toastContainer.remove(), 3000);
+    }
+
+    function goToCheckout() {
+        if (getCart().length > 0) {
+            window.location.href = 'Checkout.html';
+        } else {
+            showToast('Tu carrito está vacío', 'warning');
+        }
+    }
+
+    function filterByCategory(category) {
+        currentCategory = category;
+        document.querySelectorAll('.list-group-item').forEach(item => {
+            if (item.getAttribute('data-category') === category) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+        applyFilters();
+    }
+
+    // Filtrado Integrado con Buscador
+    function applyFilters() {
+        const searchQuery = document.getElementById('product-search') ? document.getElementById('product-search').value.toLowerCase().trim() : '';
+        const priceRange = parseFloat(document.getElementById('price-range').value);
+        const featuredOnly = document.getElementById('featured-filter').checked;
+        const saleOnly = document.getElementById('sale-filter').checked;
+        
+        filteredProducts = allProducts.filter(product => {
+            // Filtro por texto de búsqueda (nombre o descripción)
+            if (searchQuery !== '') {
+                const matchName = product.name.toLowerCase().includes(searchQuery);
+                const matchDesc = product.description.toLowerCase().includes(searchQuery);
+                const matchCategory = product.category.toLowerCase().includes(searchQuery);
+                if (!matchName && !matchDesc && !matchCategory) return false;
+            }
+            // Filtros de categoría, precio y estados
+            if (currentCategory !== 'all' && product.category !== currentCategory) return false;
+            if (product.price > priceRange) return false;
+            if (featuredOnly && !product.featured) return false;
+            if (saleOnly && !product.sale) return false;
+            return true;
+        });
+        
+        renderProducts(filteredProducts);
+        updateProductCounters(filteredProducts.length);
+    }
+
+    function sortProducts(criteria) {
+        let sorted = [...filteredProducts];
+        if (criteria === 'price-asc') sorted.sort((a, b) => a.price - b.price);
+        else if (criteria === 'price-desc') sorted.sort((a, b) => b.price - a.price);
+        else if (criteria === 'name') sorted.sort((a, b) => a.name.localeCompare(b.name));
+        renderProducts(sorted);
+    }
+
+    function updateProductCounters(count) {
+        document.getElementById('showing-products').textContent = count;
+        const emptyState = document.getElementById('empty-state');
+        const container = document.getElementById('products-container');
+        
+        if (count === 0) {
+            emptyState.classList.remove('d-none');
+            container.classList.add('d-none');
+        } else {
+            emptyState.classList.add('d-none');
+            container.classList.remove('d-none');
+        }
+    }
+
+    function renderProducts(products) {
+        const container = document.getElementById('products-container');
+        container.innerHTML = '';
+        
+        products.forEach((product, index) => {
+            let badgesHTML = '';
+            if (product.sale) badgesHTML += `<span class="badge-overlay badge-sale">OFERTA</span>`;
+            else if (product.featured) badgesHTML += `<span class="badge-overlay badge-featured">DESTACADO</span>`;
+
+            const productHTML = `
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="${index * 50}">
+                    <div class="card h-100">
+                        ${badgesHTML}
+                        <div class="card-img-wrapper">
+                            <img src="${product.image}" class="card-img-top" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Imagen+No+Disponible'">
+                            <div class="product-quick-view" onclick="openProductModal(${product.id})">
+                                <i class="far fa-eye me-2"></i> Vista Rápida
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="category-label">${product.category}</div>
+                            <h5 class="card-title text-truncate" title="${product.name}">${product.name}</h5>
+                            <p class="card-text">${product.description}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+                                <span class="price">$${product.price.toFixed(2)}</span>
+                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" 
+                                        onclick="addToCart('${product.name}', ${product.price}, '${product.image}')">
+                                    <i class="fas fa-cart-plus"></i> Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', productHTML);
+        });
+    }
+
+    function openProductModal(productId) {
+        const product = allProducts.find(p => p.id == productId);
+        if (!product) return;
+        
+        currentModalProduct = product.name;
+        currentModalPrice = product.price;
+        currentModalImage = product.image;
+        modalQuantity = 1;
+        
+        document.getElementById('modal-product-title').textContent = product.name;
+        document.getElementById('modal-product-price').textContent = `$${product.price.toFixed(2)}`;
+        document.getElementById('modal-product-description').textContent = product.description;
+        document.getElementById('modal-category').textContent = product.category;
+        
+        const mainImg = document.getElementById('modal-product-img');
+        mainImg.src = product.image;
+        mainImg.onerror = function() { this.src = 'https://via.placeholder.com/400x400?text=Imagen+No+Disponible'; };
+        
+        document.getElementById('modal-quantity').value = '1';
+        
+        const contentList = document.getElementById('modal-product-content');
+        contentList.innerHTML = '';
+        if(product.content) {
+            product.content.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-check text-success me-2"></i>${item}`;
+                li.className = "mb-1";
+                contentList.appendChild(li);
+            });
+        }
+        
+        const thumbnailsContainer = document.getElementById('modal-thumbnails');
+        thumbnailsContainer.innerHTML = '';
+        
+        const mainThumb = document.createElement('img');
+        mainThumb.src = product.image;
+        mainThumb.className = 'gallery-thumb active';
+        mainThumb.style.width = '70px';
+        mainThumb.style.height = '70px';
+        mainThumb.style.objectFit = 'cover';
+        mainThumb.onclick = function() {
+            document.getElementById('modal-product-img').src = product.image;
+            document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        };
+        thumbnailsContainer.appendChild(mainThumb);
+
+        const relatedProducts = allProducts.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+        relatedProducts.forEach(prod => {
+            const thumbImg = document.createElement('img');
+            thumbImg.src = prod.image;
+            thumbImg.className = 'gallery-thumb';
+            thumbImg.style.width = '70px';
+            thumbImg.style.height = '70px';
+            thumbImg.style.objectFit = 'cover';
+            thumbImg.onclick = function() {
+                document.getElementById('modal-product-img').src = prod.image;
+                document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            };
+            thumbnailsContainer.appendChild(thumbImg);
+        });
+        
+        const modal = new bootstrap.Modal(document.getElementById('productModal'));
+        modal.show();
+    }
+</script>
+
+</body>
+</html>
