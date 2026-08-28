@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CubaMax - Checkout y Finalizar Compra</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #049899;
+            --primary-dark: #026869;
+            --primary-light: #e6f5f5;
+            --accent-zelle: #7c3aed;
+            --accent-zelle-bg: #f5f3ff;
+            --accent-zelle-border: #ddd6fe;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --radius-lg: 18px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.06);
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: var(--shadow-sm);
+            padding: 0.9rem 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: var(--text-dark);
+        }
+        
+        .navbar-brand span {
+            color: var(--primary-color);
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(4, 152, 153, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            opacity: 0.85;
+            cursor: not-allowed;
+        }
+
+        /* Formulario & Resumen */
+        #order-form, .order-summary {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            padding: 2.2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--light-bg);
+        }
+
+        .section-header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #334155;
+            margin-bottom: 0.4rem;
+        }
+        
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        /* Opción de Pago */
+        .payment-card {
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            background: #fff;
+            width: 100%;
+        }
+
+        .payment-card:hover {
+            border-color: var(--accent-zelle);
+            background: var(--accent-zelle-bg);
+        }
+
+        .payment-card.active {
+            border-color: var(--accent-zelle);
+            background: var(--accent-zelle-bg);
+            color: var(--accent-zelle);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.12);
+        }
+
+        /* Tarjeta Datos de Zelle */
+        .zelle-account-card {
+            background: linear-gradient(135deg, #2e1065 0%, #4c1d95 100%);
+            color: white;
+            border-radius: 18px;
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 24px -6px rgba(76, 29, 149, 0.25);
+        }
+
+        /* Modales */
+        .modal-content {
+            border-radius: 24px;
+            overflow: hidden;
+            border: none;
+        }
+
+        .modal-zelle-header {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            border-bottom: 1px solid var(--accent-zelle-border);
+        }
+
+        .zelle-info-card {
+            background-color: #ffffff;
+            border: 1px solid var(--accent-zelle-border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.05);
+        }
+
+        /* Estilo Botón Continuar Modal Zelle */
+        .btn-zelle-action {
+            background-color: var(--accent-zelle);
+            border-color: var(--accent-zelle);
+            color: #ffffff;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .btn-zelle-action:hover:not(:disabled) {
+            background-color: #6d28d9;
+            border-color: #6d28d9;
+            color: #ffffff;
+        }
+
+        .btn-zelle-action:disabled {
+            background-color: #c4b5fd;
+            border-color: #c4b5fd;
+            color: #ffffff;
+            opacity: 0.7;
+        }
+
+        /* Productos en el Resumen */
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 68%;
+        }
+
+        .btn-delete-item {
+            color: #ef4444;
+            background: #fef2f2;
+            border: none;
+            border-radius: 6px;
+            padding: 2px 7px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-delete-item:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .total {
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dark);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: var(--shadow-md);
+            pointer-events: none;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Botón de Compra Desde Cuba */
+        .btn-cuba-direct {
+            background-color: #ffc107;
+            color: #000;
+            border: 2px solid #e0a800;
+            border-radius: 12px;
+            font-weight: 800;
+            padding: 0.85rem 1.25rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.25);
+        }
+
+        .btn-cuba-direct:hover {
+            background-color: #e0a800;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 193, 7, 0.35);
+        }
+
+        /* ==========================================
+           OPTIMIZACIONES ESPECIALES PARA MÓVILES
+           ========================================== */
+        @media (max-width: 767.98px) {
+            body {
+                font-size: 0.95rem;
+            }
+
+            #order-form, .order-summary {
+                padding: 1.25rem 1rem;
+                border-radius: 16px;
+            }
+
+            .form-control {
+                font-size: 16px !important; /* Previene zoom automático en iPhone/iOS */
+                padding: 0.7rem 0.85rem;
+            }
+
+            .section-header {
+                margin-bottom: 1.2rem;
+                padding-bottom: 0.6rem;
+            }
+
+            .section-header h4 {
+                font-size: 1.05rem !important;
+            }
+
+            .section-header-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 0.95rem;
+            }
+
+            .btn-primary {
+                font-size: 1rem;
+                padding: 0.9rem 1rem;
+            }
+
+            .zelle-account-card {
+                padding: 1.25rem;
+            }
+
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+
+            .modal-content {
+                border-radius: 18px;
+            }
+
+            .navbar-brand {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. PRIMER CARTEL DE ADVERTENCIA INICIAL -->
+    <div class="modal fade" id="initialWarningModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header bg-warning bg-gradient text-dark border-0 p-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white rounded-circle p-2 text-warning d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px;">
+                            <i class="fas fa-exclamation-triangle fa-lg"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0">¡Atención Antes de Comenzar!</h5>
+                            <small class="text-dark-50">Instrucciones requeridas para la compra</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="fs-6 text-secondary mb-3">
+                        Está listo para proceder con la compra. A continuación tendría que rellenar todos los campos con los datos necesarios.
+                    </p>
+                    <div class="p-3 bg-light rounded-3 border-start border-4 border-warning mb-4">
+                        <p class="small text-muted mb-0">
+                            <i class="fas fa-video text-warning me-2"></i>En caso de no entender bien cómo se haría todo, mire el vídeo tutorial que se encuentra al final de la sección de Checkout.
+                        </p>
+                    </div>
+                    
+                    <div class="form-check p-3 bg-light rounded-3 border mb-3">
+                        <input class="form-check-input ms-0 me-3" type="checkbox" id="understand-check" style="transform: scale(1.2);">
+                        <label class="form-check-label fw-bold text-dark small" for="understand-check">
+                            Entendido. He leído las instrucciones y estoy listo para continuar.
+                        </label>
+                    </div>
+
+                    <div class="form-check p-2 bg-white rounded-3 border">
+                        <input class="form-check-input ms-0 me-2" type="checkbox" id="dont-show-again-check" style="transform: scale(1.1);">
+                        <label class="form-check-label text-dark fw-bold small" for="dont-show-again-check">
+                            No volver a mostrar este aviso
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 p-4 pt-0">
+                    <button type="button" class="btn btn-primary w-100 py-3 rounded-3" id="btn-proceed-checkout" disabled>
+                        Proceder con la Compra <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MODAL DE ADVERTENCIA PARA ZELLE -->
+    <div class="modal fade" id="zelleInfoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header modal-zelle-header p-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white rounded-circle p-2 text-primary d-flex align-items-center justify-content-center shadow-sm flex-shrink-0" style="width: 48px; height: 48px; color: var(--accent-zelle) !important;">
+                            <i class="fas fa-shield-heart fa-xl"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0 text-dark">Instrucciones Importantes de Pago por Zelle</h5>
+                            <small class="text-muted">Garantía de procesamiento seguro de su transferencia</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <div class="zelle-info-card mb-3">
+                        <div class="d-flex gap-3">
+                            <div class="text-primary pt-1 flex-shrink-0" style="color: var(--accent-zelle) !important;">
+                                <i class="fas fa-circle-info fa-lg"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold text-dark mb-1">Nota o Memorando de Pago en Blanco</h6>
+                                <p class="small text-muted mb-0">
+                                    Por favor agregue el contacto exactamente como figura en nuestra página. <strong>NO ingrese la palabra "Cuba", "CubaMax" ni ninguna referencia similar</strong> en la nota o concepto de la transferencia.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zelle-info-card mb-4">
+                        <div class="d-flex gap-3">
+                            <div class="text-primary pt-1 flex-shrink-0" style="color: var(--accent-zelle) !important;">
+                                <i class="fas fa-hand-holding-heart fa-lg"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold text-dark mb-1">¿Por qué es importante esta norma?</h6>
+                                <p class="small text-muted mb-2">
+                                    Debido a regulaciones del sistema bancario sobre transferencias, colocar este tipo de referencias puede ocasionar retenciones administrativas y congelamiento de fondos corporativos.
+                                </p>
+                                <p class="small text-muted mb-0">
+                                    <em>En caso de un error involuntario al colocar alguna referencia, simplemente envíenos la captura con el nombre del titular emisor. Nos pondremos en contacto inmediato para gestionar la devolución completa de su dinero.</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-check p-3 bg-white rounded-3 border" style="border-color: var(--accent-zelle-border) !important;">
+                        <input class="form-check-input ms-0 me-3" type="checkbox" id="zelle-understand-check" style="transform: scale(1.2);">
+                        <label class="form-check-label fw-bold text-dark small" for="zelle-understand-check">
+                            Entendido. Confirmo que realizaré el pago sin incluir referencias en la nota para visualizar los datos bancarios.
+                        </label>
+                    </div>
+                </div>
+                <!-- BARRA DE CONTINUAR CON BOTÓN TOTALMENTE VISIBLE -->
+                <div class="modal-footer border-top-0 p-4 pt-0 bg-light d-block">
+                    <button type="button" class="btn btn-zelle-action w-100 py-3 rounded-3 shadow-sm" id="btn-accept-zelle" disabled>
+                        Aceptar y Mostrar Datos de Zelle <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar Responsiva -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Cuba<span>Max</span></a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="como-funciona.html">Cómo Funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimonios.html">Testimonios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+                </ul>
+                <div class="d-flex ms-lg-4 mt-3 mt-lg-0 w-100 w-lg-auto">
+                    <a href="Checkout.html" class="btn btn-primary px-4 w-100 w-lg-auto">Hacer Pedido</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Formulario de Pedido -->
+    <section class="py-4 py-md-5" id="pedido">
+        <div class="container">
+            <div class="text-center mb-4 mb-md-5">
+                <h2 class="fw-extrabold fs-2 fs-md-1">Finalizar tu Compra</h2>
+                <p class="text-muted">Ingresa los datos para coordinar la entrega en Cuba.</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Columna Izquierda: Formulario -->
+                <div class="col-lg-8">
+                    <div id="order-form">
+
+                        <!-- BOTÓN: REALIZAR COMPRA DESDE CUBA -->
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-cuba-direct w-100 fs-6 d-flex align-items-center justify-content-center gap-2" id="btn-cuba-checkout">
+                                <i class="fas fa-box-open fa-lg"></i>
+                                <span>Realizar Compra Desde Cuba</span>
+                                <i class="fas fa-arrow-right ms-auto"></i>
+                            </button>
+                        </div>
+
+                        <!-- BARRA DE ACCIÓN: RELLENAR DATOS -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between p-3 mb-4 bg-light rounded-3 border">
+                            <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
+                                <i class="fas fa-database text-primary"></i>
+                                <span class="small fw-semibold text-dark">¿Ya habías comprado antes?</span>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm fw-bold px-3 py-2 rounded-2 w-100 w-sm-auto" id="btn-load-saved-data">
+                                <i class="fas fa-file-signature me-1"></i> Rellenar con Mis Datos Guardados
+                            </button>
+                        </div>
+
+                        <form action="https://forminit.com/f/ze02lgpnuo0" method="POST" enctype="multipart/form-data" id="shipping-form">
+                            
+                            <!-- Campos ocultos para Forminit -->
+                            <input type="hidden" name="fi-text-metodo_pago" id="hidden-payment-method" value="Zelle">
+                            <input type="hidden" name="fi-text-detalle_carrito" id="hidden-cart-details" value="">
+                            <input type="hidden" name="fi-text-total_pagar" id="hidden-total-amount" value="$0">
+                            <!-- Campo oculto con toda la información en un solo párrafo para la factura -->
+                            <input type="hidden" name="fi-text-resumen_factura_parrafo" id="hidden-invoice-paragraph" value="">
+
+                            <!-- Datos del Remitente -->
+                            <div class="section-header">
+                                <div class="section-header-icon"><i class="fas fa-user-check"></i></div>
+                                <h4 class="mb-0 fw-bold fs-5">Datos del Remitente (Quien Envía)</h4>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="sender-name" class="form-label">Tu Nombre Completo</label>
+                                    <input type="text" name="fi-sender-fullName" class="form-control" id="sender-name" placeholder="Tu nombre completo" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="sender-email" class="form-label">Tu Correo Electrónico</label>
+                                    <input type="email" name="fi-sender-email" class="form-control" id="sender-email" placeholder="correo@ejemplo.com" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="sender-phone" class="form-label">Tu Teléfono de Contacto</label>
+                                    <input type="text" name="fi-text-telefono_remitente" class="form-control" id="sender-phone" placeholder="Número telefónico" required>
+                                </div>
+                            </div>
+
+                            <!-- Datos en Cuba -->
+                            <div class="section-header mt-4 mt-md-5">
+                                <div class="section-header-icon"><i class="fas fa-truck-fast"></i></div>
+                                <h4 class="mb-0 fw-bold fs-5">Datos del Destinatario (En Cuba)</h4>
+                            </div>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="recipient-name" class="form-label">Nombre Completo</label>
+                                    <input type="text" name="fi-text-destinatario_nombre" class="form-control" id="recipient-name" placeholder="Quien recibe en Cuba" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="recipient-id" class="form-label">Carnet de Identidad (CI)</label>
+                                    <input type="text" name="fi-text-destinatario_ci" class="form-control" id="recipient-id" placeholder="Número de CI" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="recipient-phone" class="form-label">Teléfono / Móvil en Cuba</label>
+                                    <input type="text" name="fi-text-destinatario_telefono" class="form-control" id="recipient-phone" placeholder="+53 5xxx xxxx" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="recipient-address" class="form-label">Dirección Exacta</label>
+                                    <textarea name="fi-text-destinatario_direccion" class="form-control" id="recipient-address" rows="2" placeholder="Calle, Número, Municipio, Provincia..." required></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Método de Pago -->
+                            <div class="section-header mt-4 mt-md-5">
+                                <div class="section-header-icon"><i class="fas fa-wallet"></i></div>
+                                <h4 class="mb-0 fw-bold fs-5">Método de Pago</h4>
+                            </div>
+
+                            <p class="small text-muted mb-3">Haz clic en la opción para seleccionar el método de pago:</p>
+                            
+                            <div class="mb-4">
+                                <div class="payment-card" id="zelle-option" data-method="Zelle">
+                                    <i class="fas fa-mobile-alt fa-lg" style="color: var(--accent-zelle);"></i>
+                                    <span>Pagar con Zelle</span>
+                                </div>
+                            </div>
+
+                            <!-- CAJA CON LOS DATOS DE ZELLE ACTUALIZADOS DINÁMICAMENTE -->
+                            <div id="payment-details-box" class="zelle-account-card mb-4 d-none">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge bg-white text-dark fw-bold px-3 py-2 rounded-pill"><i class="fas fa-check-circle text-success me-1"></i> Cuenta Verificada</span>
+                                    <i class="fas fa-shield-halved text-white-50 fa-lg"></i>
+                                </div>
+                                <p class="small text-white-50 mb-1 text-uppercase fw-semibold">Titular / Empresa</p>
+                                <h5 class="fw-bold mb-3 text-white text-break" id="zelle-account-name"><span class="spinner-border spinner-border-sm me-2" role="status"></span>Cargando...</h5>
+                                <p class="small text-white-50 mb-1 text-uppercase fw-semibold">Zelle/ Numero o Correo</p>
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <h5 class="fw-extrabold text-warning mb-0 fs-5 text-break" id="zelle-email-text">Cargando...</h5>
+                                    <button type="button" class="btn btn-sm btn-light rounded-pill px-3 py-1 fw-bold mt-1 mt-sm-0" id="copy-zelle-btn" disabled>
+                                        <i class="fas fa-copy me-1"></i> Copiar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Captura y Nombre de Cuenta Emisora -->
+                            <div class="row g-3 mb-4 bg-light p-3 rounded-4 border">
+                                <div class="col-md-6">
+                                    <label for="payment-proof" class="form-label fw-bold">1. Captura del Pago Realizado</label>
+                                    <input type="file" name="fi-file-comprobante_pago" class="form-control" id="payment-proof" accept="image/*" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="account-sender-name" class="form-label fw-bold">2. Nombre de la cuenta desde donde envió</label>
+                                    <input type="text" name="fi-text-cuenta_emisora" class="form-control" id="account-sender-name" placeholder="Nombre del titular que transfirió" required>
+                                </div>
+                            </div>
+
+                            <div class="bg-light p-3 rounded-4 mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms-check" required>
+                                    <label class="form-check-label small text-muted fw-semibold" for="terms-check">
+                                        Confirmo que he leído las instrucciones de pago y los datos proporcionados son correctos.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Mensaje Explicativo -->
+                            <div class="card border-0 bg-light p-3 p-md-4 rounded-4 mb-4 border-start border-4 border-info shadow-sm">
+                                <h6 class="fw-bold text-info-emphasis mb-2 d-flex align-items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> Información sobre tu pedido
+                                </h6>
+                                <p class="small text-secondary mb-0">
+                                    Una vez presiones Realizar Pedido, tu orden pasará a estado de procesamiento. Tan pronto como confirmemos tu pago te notificaremos y estará 100% en marcha. Nos contactaremos con la persona responsable de recibir en Cuba para coordinar la entrega.
+                                </p>
+                            </div>
+                            
+                            <!-- BOTÓN CON ANIMACIÓN DE CARGA AL ENVIAR -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg py-3 fs-6 fw-bold" id="submit-order">
+                                    <i class="fas fa-paper-plane me-2"></i> Realizar Pedido
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Columna Derecha: Resumen de Compra -->
+                <div class="col-lg-4">
+                    <div class="order-summary sticky-top" style="top: 100px;">
+                        <h5 class="mb-3 fw-bold">Resumen de Compra</h5>
+                        
+                        <div id="order-summary-items" class="mb-3"></div>
+                        
+                        <div class="summary-item">
+                            <span class="text-muted">Subtotal</span>
+                            <span id="subtotal" class="fw-bold">$0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="text-muted">Envío</span>
+                            <span id="shipping-cost">$0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="text-muted">Impuestos</span>
+                            <span id="taxes">$0</span>
+                        </div>
+                        
+                        <div class="total">
+                            <span>Total</span>
+                            <span id="total" class="text-primary">$0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN TUTORIAL EN VIDEO -->
+            <div class="row mt-5 pt-4 pt-md-5 border-top">
+                <div class="col-12 text-center mb-4">
+                    <h3 class="fw-bold fs-4 fs-md-3"><i class="fas fa-graduation-cap text-primary me-2"></i>Video Tutorial Paso a Paso</h3>
+                    <p class="text-muted small">Si tienes dudas sobre cómo realizar el pago o completar el formulario, mira este tutorial.</p>
+                </div>
+                <div class="col-lg-8 mx-auto">
+                    <div class="card border-0 shadow-lg p-2 rounded-4">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/invalid_video_error" title="Tutorial de Compra" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const fixedShippingCost = 0.00;
+        const fixedTaxes = 0.00;
+
+        // URL DE GOOGLE APPS SCRIPT
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztXFADyeirSyIELsjHzpNoeLVB-P4pqi0K7gnrngcNQ9YpcC6hFOeXhgVGtF6hT0M3uw/exec';
+
+        // LLAVES DE LOCAL STORAGE
+        const STORAGE_HIDE_MODAL = 'cubamax-hide-initial-warning';
+        const STORAGE_USER_DATA = 'cubamax-user-saved-form-data';
+
+        // CAMPOS PARA ALMACENAR Y RELLENAR
+        const formInputIds = [
+            'sender-name', 
+            'sender-email', 
+            'sender-phone',
+            'recipient-name', 
+            'recipient-id', 
+            'recipient-phone', 
+            'recipient-address',
+            'account-sender-name'
+        ];
+
+        // FUNCIÓN PARA OBTENER DATOS DE ZELLE DESDE GOOGLE SHEETS VIA APPS SCRIPT
+        function cargarCuentaDesdeSheets() {
+            const nameEl = document.getElementById('zelle-account-name');
+            const emailEl = document.getElementById('zelle-email-text');
+            const copyBtn = document.getElementById('copy-zelle-btn');
+
+            if (!nameEl || !emailEl || !copyBtn) return;
+
+            nameEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Cargando...';
+            emailEl.textContent = 'Cargando...';
+            copyBtn.disabled = true;
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 60000); // Timeout de 60 segundos
+
+            fetch(APPS_SCRIPT_URL, { signal: controller.signal })
+                .then(response => {
+                    clearTimeout(timeoutId);
+                    if (!response.ok) throw new Error('Error en la respuesta del servidor');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.titular && data.zelle) {
+                        nameEl.textContent = data.titular;
+                        emailEl.textContent = data.zelle;
+                        copyBtn.disabled = false;
+                    } else {
+                        throw new Error('Formato de datos no válido');
+                    }
+                })
+                .catch(err => {
+                    clearTimeout(timeoutId);
+                    console.error('Error al obtener datos de Apps Script:', err);
+                    nameEl.textContent = 'Error al cargar la cuenta';
+                    emailEl.textContent = 'Error al cargar los datos';
+                    copyBtn.disabled = true;
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Cargar datos bancarios actualizados en tiempo real
+            cargarCuentaDesdeSheets();
+
+            // ==========================================
+            // BOTÓN: REALIZAR COMPRA DESDE CUBA
+            // ==========================================
+            const btnCubaCheckout = document.getElementById('btn-cuba-checkout');
+            if (btnCubaCheckout) {
+                btnCubaCheckout.addEventListener('click', () => {
+                    const cart = getCart();
+                    if (!cart || cart.length === 0) {
+                        alert('Tu carrito está vacío. Agrega al menos un producto antes de realizar la compra desde Cuba.');
+                        return;
+                    }
+                    // Guarda el carrito en localStorage para que esté disponible en chekoutt.html
+                    localStorage.setItem('cubamax-cart', JSON.stringify(cart));
+                    // Redirección a chekoutt.html (con doble 'tt')
+                    window.location.href = 'chekoutt.html';
+                });
+            }
+
+            // ==========================================
+            // 1. MANEJO DEL MODAL INICIAL Y PREFERENCIAS
+            // ==========================================
+            const modalEl = document.getElementById('initialWarningModal');
+            const initialWarningModal = new bootstrap.Modal(modalEl);
+            const dontShowCheck = document.getElementById('dont-show-again-check');
+            const understandCheck = document.getElementById('understand-check');
+            const proceedBtn = document.getElementById('btn-proceed-checkout');
+
+            const hideModalPref = localStorage.getItem(STORAGE_HIDE_MODAL);
+            if (hideModalPref !== 'true') {
+                initialWarningModal.show();
+            }
+
+            understandCheck.addEventListener('change', function() {
+                proceedBtn.disabled = !this.checked;
+            });
+
+            proceedBtn.addEventListener('click', function() {
+                if (dontShowCheck.checked) {
+                    localStorage.setItem(STORAGE_HIDE_MODAL, 'true');
+                } else {
+                    localStorage.removeItem(STORAGE_HIDE_MODAL);
+                }
+                initialWarningModal.hide();
+            });
+
+            // ==========================================
+            // 2. SISTEMA DE GUARDADO Y RELLENADO DE DATOS
+            // ==========================================
+
+            function saveInputsToStorage() {
+                const formData = {};
+                formInputIds.forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) {
+                        formData[id] = input.value;
+                    }
+                });
+                localStorage.setItem(STORAGE_USER_DATA, JSON.stringify(formData));
+            }
+
+            function loadInputsFromStorage() {
+                const savedDataRaw = localStorage.getItem(STORAGE_USER_DATA);
+                if (!savedDataRaw) return false;
+
+                try {
+                    const formData = JSON.parse(savedDataRaw);
+                    let filledAny = false;
+
+                    formInputIds.forEach(id => {
+                        const input = document.getElementById(id);
+                        if (input && formData[id] !== undefined && formData[id] !== '') {
+                            input.value = formData[id];
+                            filledAny = true;
+                        }
+                    });
+                    return filledAny;
+                } catch (e) {
+                    console.error("Error leyendo datos guardados:", e);
+                    return false;
+                }
+            }
+
+            // A) Al abrir la página los campos aparecen completamente vacíos
+            formInputIds.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) input.value = '';
+            });
+
+            // B) Guardar dinámicamente en LocalStorage mientras el usuario escribe
+            formInputIds.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.addEventListener('input', saveInputsToStorage);
+                }
+            });
+
+            // C) Botón "Rellenar con Mis Datos Guardados"
+            const btnLoadData = document.getElementById('btn-load-saved-data');
+            btnLoadData.addEventListener('click', () => {
+                const wasFilled = loadInputsFromStorage();
+                if (wasFilled) {
+                    alert('¡Datos rellenados con éxito desde la memoria local!');
+                } else {
+                    alert('Aún no hay datos guardados. Completa el formulario una vez y tus datos se guardarán para la próxima.');
+                }
+            });
+
+            // ==========================================
+            // 3. MANEJO DEL PAGO ZELLE Y CHECKBOX DE CONFIRMACIÓN
+            // ==========================================
+            const zelleOption = document.getElementById('zelle-option');
+            const zelleModalEl = document.getElementById('zelleInfoModal');
+            const zelleInfoModal = new bootstrap.Modal(zelleModalEl);
+            const zelleUnderstandCheck = document.getElementById('zelle-understand-check');
+            const btnAcceptZelle = document.getElementById('btn-accept-zelle');
+
+            zelleOption.addEventListener('click', function() {
+                zelleInfoModal.show();
+            });
+
+            zelleUnderstandCheck.addEventListener('change', function() {
+                btnAcceptZelle.disabled = !this.checked;
+            });
+
+            btnAcceptZelle.addEventListener('click', function() {
+                zelleOption.classList.add('active');
+                document.getElementById('hidden-payment-method').value = 'Zelle';
+                document.getElementById('payment-details-box').classList.remove('d-none');
+                zelleInfoModal.hide();
+            });
+
+            // Copiar correo de Zelle
+            document.getElementById('copy-zelle-btn').addEventListener('click', function() {
+                const emailToCopy = document.getElementById('zelle-email-text').textContent.trim();
+                navigator.clipboard.writeText(emailToCopy);
+                this.innerHTML = '<i class="fas fa-check me-1"></i> ¡Copiado!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy me-1"></i> Copiar';
+                }, 2000);
+            });
+
+            // ==========================================
+            // 4. ACTUALIZAR RESUMEN DE COMPRA
+            // ==========================================
+            updateOrderSummary();
+
+            // ==========================================
+            // 5. ENVÍO DE FORMULARIO -> ESTADO DE CARGA Y REDIRECCIÓN A termino.html
+            // ==========================================
+            const shippingForm = document.getElementById('shipping-form');
+            const submitBtn = document.getElementById('submit-order');
+
+            shippingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // VALIDACIÓN: VERIFICAR SI HAY PRODUCTOS EN EL CARRITO ANTES DE COMPRAR
+                const cart = getCart();
+                if (!cart || cart.length === 0) {
+                    alert('Error: Tu carrito está vacío. Agrega al menos un producto antes de realizar el pedido.');
+                    return; // Detiene el proceso y no permite realizar la compra
+                }
+
+                // MOSTRAR ESTADO DE CARGA Y DESHABILITAR BOTÓN PARA EVITAR DOBLE CLIC
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Procesando tu pedido, por favor espere...';
+
+                saveInputsToStorage();
+
+                const rawSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const totalRounded = Math.round(rawSubtotal + fixedShippingCost + fixedTaxes);
+                const cartText = cart.map(i => `${i.quantity}x ${i.name} ($${Math.round(i.price * i.quantity)})`).join(' | ');
+                
+                document.getElementById('hidden-cart-details').value = cartText;
+                document.getElementById('hidden-total-amount').value = `$${totalRounded}`;
+
+                // ESTRUCTURACIÓN DE INFORMACIÓN ORGANIZADA TIPO PÁRRAFO PARA FACTURA
+                const sName = document.getElementById('sender-name').value;
+                const sEmail = document.getElementById('sender-email').value;
+                const sPhone = document.getElementById('sender-phone').value;
+                const rName = document.getElementById('recipient-name').value;
+                const rId = document.getElementById('recipient-id').value;
+                const rPhone = document.getElementById('recipient-phone').value;
+                const rAddress = document.getElementById('recipient-address').value;
+                const pMethod = document.getElementById('hidden-payment-method').value;
+                const accSender = document.getElementById('account-sender-name').value;
+                const cDetails = document.getElementById('hidden-cart-details').value;
+                const tAmount = document.getElementById('hidden-total-amount').value;
+
+                const resumenParrafo = `INFORMACIÓN DE LA FACTURA: Persona que envía: ${sName}. Correo del remitente: ${sEmail}. Teléfono del remitente: ${sPhone}. Persona que recibe en Cuba: ${rName}. Carnet de Identidad en Cuba: ${rId}. Número de teléfono en Cuba: ${rPhone}. Dirección exacta en Cuba: ${rAddress}. Método de pago: ${pMethod}. Nombre de la cuenta desde donde envió: ${accSender}. Detalles de productos: ${cDetails}. Total a pagar: ${tAmount}.`;
+
+                document.getElementById('hidden-invoice-paragraph').value = resumenParrafo;
+
+                const formData = new FormData(shippingForm);
+
+                fetch(shippingForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                }).then(() => {
+                    finalizarYRedirigir();
+                }).catch(() => {
+                    finalizarYRedirigir();
+                });
+
+                function finalizarYRedirigir() {
+                    localStorage.removeItem('cubamax-cart');
+                    shippingForm.reset();
+                    window.location.href = 'termino.html';
+                }
+            });
+        });
+
+        function getCart() {
+            try {
+                return JSON.parse(localStorage.getItem('cubamax-cart')) || [];
+            } catch (err) {
+                return [];
+            }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cubamax-cart', JSON.stringify(cart));
+            updateOrderSummary();
+        }
+
+        function removeItem(index) {
+            let cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+        }
+
+        function updateOrderSummary() {
+            const cart = getCart();
+            const subtotalElement = document.getElementById('subtotal');
+            const shippingElement = document.getElementById('shipping-cost');
+            const taxesElement = document.getElementById('taxes');
+            const totalElement = document.getElementById('total');
+            const summaryElement = document.getElementById('order-summary-items');
+
+            shippingElement.textContent = `$${Math.round(fixedShippingCost)}`;
+            taxesElement.textContent = `$${Math.round(fixedTaxes)}`;
+
+            if (cart.length === 0) {
+                subtotalElement.textContent = '$0';
+                totalElement.textContent = '$0';
+                summaryElement.innerHTML = `
+                    <div class="text-center py-4 text-muted small">
+                        <i class="fas fa-shopping-basket fa-2x d-block mb-2 text-warning"></i>
+                        <strong>No hay productos en el carrito</strong><br>
+                        Debes agregar productos para poder finalizar la compra.
+                    </div>`;
+                return;
+            }
+
+            const rawSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const rawTotal = rawSubtotal + fixedShippingCost + fixedTaxes;
+
+            const subtotalRounded = Math.round(rawSubtotal);
+            const totalRounded = Math.round(rawTotal);
+
+            subtotalElement.textContent = `$${subtotalRounded}`;
+            totalElement.textContent = `$${totalRounded}`;
+
+            summaryElement.innerHTML = cart.map((item, index) => `
+                <div class="cart-item-row">
+                    <div class="cart-item-info">
+                        <button type="button" class="btn-delete-item" onclick="removeItem(${index})" title="Eliminar producto">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        <span class="text-truncate fw-semibold" style="font-size: 0.8rem;">${item.quantity}x ${item.name}</span>
+                    </div>
+                    <span class="fw-bold text-dark" style="font-size: 0.85rem;">$${Math.round(item.price * item.quantity)}</span>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

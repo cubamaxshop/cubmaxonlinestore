@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CubaMax - Checkout y Finalizar Compra</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #049899;
+            --primary-dark: #026869;
+            --primary-light: #e6f5f5;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --radius-lg: 18px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.06);
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: var(--shadow-sm);
+            padding: 0.9rem 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: var(--text-dark);
+        }
+        
+        .navbar-brand span {
+            color: var(--primary-color);
+        }
+
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(4, 152, 153, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Formulario & Resumen */
+        #order-form, .order-summary {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            padding: 2.2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--light-bg);
+        }
+
+        .section-header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #334155;
+            margin-bottom: 0.4rem;
+        }
+        
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        /* Tarjetas de Métodos de Pago */
+        .payment-card {
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: #fff;
+            height: 100%;
+        }
+
+        .payment-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .payment-card.active {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+            box-shadow: 0 6px 16px rgba(4, 152, 153, 0.15);
+        }
+
+        .bank-card-display {
+            background: linear-gradient(135deg, #026869 0%, #049899 100%);
+            color: white;
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px rgba(4, 152, 153, 0.2);
+        }
+
+        /* Modales */
+        .modal-content {
+            border-radius: 24px;
+            overflow: hidden;
+            border: none;
+        }
+
+        /* Productos en el Resumen */
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 68%;
+        }
+
+        .btn-delete-item {
+            color: #ef4444;
+            background: #fef2f2;
+            border: none;
+            border-radius: 6px;
+            padding: 2px 7px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-delete-item:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .total {
+            font-weight: 800;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dark);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: var(--shadow-md);
+            pointer-events: none;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 767.98px) {
+            #order-form, .order-summary {
+                padding: 1.25rem 1rem;
+                border-radius: 16px;
+            }
+            .form-control {
+                font-size: 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. CARTEL DE ADVERTENCIA INICIAL -->
+    <div class="modal fade" id="initialWarningModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header bg-warning bg-gradient text-dark border-0 p-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-white rounded-circle p-2 text-warning d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px;">
+                            <i class="fas fa-exclamation-triangle fa-lg"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title fw-bold mb-0">¡Atención Antes de Comenzar!</h5>
+                            <small class="text-dark-50">Instrucciones requeridas para la compra</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="fs-6 text-secondary mb-3">
+                        Está listo para proceder con la compra. A continuación tendría que rellenar todos los campos con los datos necesarios.
+                    </p>
+                    <div class="p-3 bg-light rounded-3 border-start border-4 border-warning mb-4">
+                        <p class="small text-muted mb-0">
+                            <i class="fas fa-video text-warning me-2"></i>En caso de no entender bien cómo se haría todo, mire el vídeo tutorial que se encuentra al final de la sección de Checkout.
+                        </p>
+                    </div>
+                    
+                    <div class="form-check p-3 bg-light rounded-3 border mb-3">
+                        <input class="form-check-input ms-0 me-3" type="checkbox" id="understand-check" style="transform: scale(1.2);">
+                        <label class="form-check-label fw-bold text-dark small" for="understand-check">
+                            Entendido. He leído las instrucciones y estoy listo para continuar.
+                        </label>
+                    </div>
+
+                    <div class="form-check p-2 bg-white rounded-3 border">
+                        <input class="form-check-input ms-0 me-2" type="checkbox" id="dont-show-again-check" style="transform: scale(1.1);">
+                        <label class="form-check-label text-dark fw-bold small" for="dont-show-again-check">
+                            No volver a mostrar este aviso
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 p-4 pt-0">
+                    <button type="button" class="btn btn-primary w-100 py-3 rounded-3" id="btn-proceed-checkout" disabled>
+                        Proceder con la Compra <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Cuba<span>Max</span></a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="como-funciona.html">Cómo Funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimonios.html">Testimonios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+                </ul>
+                <div class="d-flex ms-lg-4 mt-3 mt-lg-0 w-100 w-lg-auto">
+                    <a href="Checkout.html" class="btn btn-primary px-4 w-100 w-lg-auto">Hacer Pedido</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Formulario de Pedido -->
+    <section class="py-4 py-md-5" id="pedido">
+        <div class="container">
+            <div class="text-center mb-4 mb-md-5">
+                <h2 class="fw-extrabold fs-2 fs-md-1">Finalizar tu Compra</h2>
+                <p class="text-muted">Ingresa los datos para coordinar la entrega en Cuba.</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Columna Izquierda: Formulario -->
+                <div class="col-lg-8">
+                    <div id="order-form">
+
+                        <!-- Botón Cargar Datos Guardados -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between p-3 mb-4 bg-light rounded-3 border">
+                            <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
+                                <i class="fas fa-database text-primary"></i>
+                                <span class="small fw-semibold text-dark">¿Ya habías comprado antes?</span>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm fw-bold px-3 py-2 rounded-2" id="btn-load-saved-data">
+                                <i class="fas fa-file-signature me-1"></i> Rellenar Datos Guardados
+                            </button>
+                        </div>
+
+                        <form action="https://forminit.com/f/ze02lgpnuo0" method="POST" enctype="multipart/form-data" id="shipping-form">
+                            
+                            <!-- Campos ocultos para Forminit -->
+                            <input type="hidden" name="fi-text-metodo_pago" id="hidden-payment-method" value="CUP - Tarjeta BPA">
+                            <input type="hidden" name="fi-text-detalle_carrito" id="hidden-cart-details" value="">
+                            <input type="hidden" name="fi-text-total_pagar" id="hidden-total-amount" value="0 CUP">
+                            <input type="hidden" name="fi-text-resumen_factura_parrafo" id="hidden-invoice-paragraph" value="">
+
+                            <!-- Datos de Entrega -->
+                            <div class="section-header">
+                                <div class="section-header-icon"><i class="fas fa-truck-fast"></i></div>
+                                <h4 class="mb-0 fw-bold fs-5">Datos de Entrega</h4>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="recipient-name" class="form-label">Nombre Completo</label>
+                                    <input type="text" name="fi-text-destinatario_nombre" class="form-control" id="recipient-name" placeholder="Nombre completo de quien recibe" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="recipient-id" class="form-label">Carnet de Identidad</label>
+                                    <input type="text" name="fi-text-destinatario_ci" class="form-control" id="recipient-id" placeholder="Número de carnet de identidad" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="recipient-phone" class="form-label">Número de Contacto</label>
+                                    <input type="text" name="fi-text-destinatario_telefono" class="form-control" id="recipient-phone" placeholder="Teléfono o móvil de contacto" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="recipient-address" class="form-label">Dirección de Entrega</label>
+                                    <input type="text" name="fi-text-destinatario_direccion" class="form-control" id="recipient-address" placeholder="Calle, número, entre calles, municipio..." required>
+                                </div>
+                            </div>
+
+                            <!-- Métodos de Pago -->
+                            <div class="section-header mt-4 mt-md-5">
+                                <div class="section-header-icon"><i class="fas fa-credit-card"></i></div>
+                                <h4 class="mb-0 fw-bold fs-5">Selecciona el Método de Pago</h4>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <div class="payment-card active" id="pay-cup" onclick="selectPayment('CUP')">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <i class="fas fa-money-bill-wave fa-2x text-success"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-0">CUP - Tarjeta BPA</h6>
+                                                <small class="text-muted">Transferencia en CUP</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="payment-card" id="pay-mlc" onclick="selectPayment('MLC')">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <i class="fas fa-credit-card fa-2x text-primary"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-0">Tarjeta MLC</h6>
+                                                <small class="text-muted">Transferencia en MLC</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta Informativa de Pago -->
+                            <div class="bank-card-display mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-white text-dark fw-bold px-3 py-1 rounded-pill" id="payment-badge">CUP Tarjeta BPA</span>
+                                    <i class="fas fa-shield-alt text-white-50 fa-lg"></i>
+                                </div>
+                                <p class="small text-white-50 mb-1 text-uppercase fw-semibold">Número de Tarjeta para Transferir</p>
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <h4 class="fw-extrabold text-warning mb-0" id="card-number-display">9205-1299-7325-2878</h4>
+                                    <button type="button" class="btn btn-sm btn-light rounded-pill px-3 py-1 fw-bold" id="copy-card-btn">
+                                        <i class="fas fa-copy me-1"></i> Copiar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Datos del Comprobante y Titular -->
+                            <div class="row g-3 mb-4 bg-light p-3 rounded-4 border">
+                                <div class="col-md-6">
+                                    <label for="payment-proof" class="form-label fw-bold">1. Captura del Envió / Pago</label>
+                                    <input type="file" name="fi-file-comprobante_pago" class="form-control" id="payment-proof" accept="image/*" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="account-sender-name" class="form-label fw-bold">2. Nombre del Titular de la Tarjeta</label>
+                                    <input type="text" name="fi-text-cuenta_emisora" class="form-control" id="account-sender-name" placeholder="Nombre a quien está la tarjeta" required>
+                                </div>
+                            </div>
+
+                            <!-- Checkbox de confirmación de lectura -->
+                            <div class="bg-light p-3 rounded-4 mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms-check" required>
+                                    <label class="form-check-label small text-muted fw-semibold" for="terms-check">
+                                        Confirmo que he leído las instrucciones de pago y los datos proporcionados son correctos.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Información informativa -->
+                            <div class="card border-0 bg-light p-3 p-md-4 rounded-4 mb-4 border-start border-4 border-info shadow-sm">
+                                <h6 class="fw-bold text-info-emphasis mb-2 d-flex align-items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> Información sobre tu pedido
+                                </h6>
+                                <p class="small text-secondary mb-0">
+                                    Una vez presiones Realizar Pedido, tu orden pasará a estado de procesamiento. Tan pronto como confirmemos tu pago nos contactaremos con la persona indicada para coordinar la entrega.
+                                </p>
+                            </div>
+                            
+                            <!-- Botón Enviar -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg py-3 fs-6 fw-bold" id="submit-order">
+                                    <i class="fas fa-paper-plane me-2"></i> Realizar Pedido
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Columna Derecha: Resumen de Compra en CUP -->
+                <div class="col-lg-4">
+                    <div class="order-summary sticky-top" style="top: 100px;">
+                        <h5 class="mb-3 fw-bold">Resumen de Compra</h5>
+                        
+                        <div id="order-summary-items" class="mb-3"></div>
+                        
+                        <div class="summary-item">
+                            <span class="text-muted">Subtotal (CUP)</span>
+                            <span id="subtotal" class="fw-bold">0 CUP</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="text-muted">Envío</span>
+                            <span id="shipping-cost">0 CUP</span>
+                        </div>
+                        
+                        <div class="total">
+                            <span>Total (CUP)</span>
+                            <span id="total" class="text-primary">0 CUP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Tutorial -->
+            <div class="row mt-5 pt-4 pt-md-5 border-top">
+                <div class="col-12 text-center mb-4">
+                    <h3 class="fw-bold fs-4 fs-md-3"><i class="fas fa-graduation-cap text-primary me-2"></i>Video Tutorial Paso a Paso</h3>
+                    <p class="text-muted small">Si tienes dudas sobre cómo realizar el pago o completar el formulario, mira este tutorial.</p>
+                </div>
+                <div class="col-lg-8 mx-auto">
+                    <div class="card border-0 shadow-lg p-2 rounded-4">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/invalid_video_error" title="Tutorial de Compra" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const CUP_EXCHANGE_RATE = 660; // Tasa de conversión a CUP
+        const STORAGE_HIDE_MODAL = 'cubamax-hide-initial-warning';
+        const STORAGE_USER_DATA = 'cubamax-user-saved-form-data';
+
+        const formInputIds = [
+            'recipient-name', 
+            'recipient-id', 
+            'recipient-phone', 
+            'recipient-address',
+            'account-sender-name'
+        ];
+
+        // Datos de Tarjetas
+        const paymentDetails = {
+            'CUP': {
+                badge: 'CUP Tarjeta BPA',
+                number: '9205-1299-7325-2878',
+                methodText: 'CUP - Tarjeta BPA'
+            },
+            'MLC': {
+                badge: 'Tarjeta MLC',
+                number: '9225-1299-7531-9218',
+                methodText: 'Tarjeta MLC'
+            }
+        };
+
+        let currentPaymentMethod = 'CUP';
+
+        function selectPayment(type) {
+            currentPaymentMethod = type;
+            document.getElementById('pay-cup').classList.toggle('active', type === 'CUP');
+            document.getElementById('pay-mlc').classList.toggle('active', type === 'MLC');
+
+            const info = paymentDetails[type];
+            document.getElementById('payment-badge').textContent = info.badge;
+            document.getElementById('card-number-display').textContent = info.number;
+            document.getElementById('hidden-payment-method').value = info.methodText;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ==========================================
+            // 1. MANEJO DEL MODAL DE ADVERTENCIA INICIAL
+            // ==========================================
+            const modalEl = document.getElementById('initialWarningModal');
+            const initialWarningModal = new bootstrap.Modal(modalEl);
+            const dontShowCheck = document.getElementById('dont-show-again-check');
+            const understandCheck = document.getElementById('understand-check');
+            const proceedBtn = document.getElementById('btn-proceed-checkout');
+
+            const hideModalPref = localStorage.getItem(STORAGE_HIDE_MODAL);
+            if (hideModalPref !== 'true') {
+                initialWarningModal.show();
+            }
+
+            understandCheck.addEventListener('change', function() {
+                proceedBtn.disabled = !this.checked;
+            });
+
+            proceedBtn.addEventListener('click', function() {
+                if (dontShowCheck.checked) {
+                    localStorage.setItem(STORAGE_HIDE_MODAL, 'true');
+                } else {
+                    localStorage.removeItem(STORAGE_HIDE_MODAL);
+                }
+                initialWarningModal.hide();
+            });
+
+            // Botón Copiar Tarjeta
+            document.getElementById('copy-card-btn').addEventListener('click', function() {
+                const cardNum = paymentDetails[currentPaymentMethod].number.replace(/-/g, '');
+                navigator.clipboard.writeText(cardNum);
+                this.innerHTML = '<i class="fas fa-check me-1"></i> ¡Copiado!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy me-1"></i> Copiar';
+                }, 2000);
+            });
+
+            // LocalStorage: Guardar y Rellenar
+            function saveInputsToStorage() {
+                const formData = {};
+                formInputIds.forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) formData[id] = input.value;
+                });
+                localStorage.setItem(STORAGE_USER_DATA, JSON.stringify(formData));
+            }
+
+            function loadInputsFromStorage() {
+                const savedDataRaw = localStorage.getItem(STORAGE_USER_DATA);
+                if (!savedDataRaw) return false;
+                try {
+                    const formData = JSON.parse(savedDataRaw);
+                    let filledAny = false;
+                    formInputIds.forEach(id => {
+                        const input = document.getElementById(id);
+                        if (input && formData[id]) {
+                            input.value = formData[id];
+                            filledAny = true;
+                        }
+                    });
+                    return filledAny;
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            formInputIds.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.addEventListener('input', saveInputsToStorage);
+                }
+            });
+
+            document.getElementById('btn-load-saved-data').addEventListener('click', () => {
+                if (loadInputsFromStorage()) {
+                    alert('¡Datos rellenados correctamente!');
+                } else {
+                    alert('No hay datos guardados aún.');
+                }
+            });
+
+            // Resumen de Compra
+            updateOrderSummary();
+
+            // Envío del Formulario
+            const shippingForm = document.getElementById('shipping-form');
+            const submitBtn = document.getElementById('submit-order');
+
+            shippingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const cart = getCart();
+                if (!cart || cart.length === 0) {
+                    alert('Tu carrito está vacío.');
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Procesando pedido...';
+
+                saveInputsToStorage();
+
+                const rawSubtotalUSD = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const totalCUP = Math.round(rawSubtotalUSD * CUP_EXCHANGE_RATE);
+                const cartText = cart.map(i => `${i.quantity}x ${i.name} (${Math.round(i.price * i.quantity * CUP_EXCHANGE_RATE).toLocaleString()} CUP)`).join(' | ');
+
+                document.getElementById('hidden-cart-details').value = cartText;
+                document.getElementById('hidden-total-amount').value = `${totalCUP.toLocaleString()} CUP`;
+
+                const rName = document.getElementById('recipient-name').value;
+                const rId = document.getElementById('recipient-id').value;
+                const rPhone = document.getElementById('recipient-phone').value;
+                const rAddress = document.getElementById('recipient-address').value;
+                const pMethod = document.getElementById('hidden-payment-method').value;
+                const accSender = document.getElementById('account-sender-name').value;
+
+                const resumenParrafo = `DATOS DEL PEDIDO: Cliente / Destinatario: ${rName}. Carnet de Identidad: ${rId}. Teléfono: ${rPhone}. Dirección de Entrega: ${rAddress}. Método de pago: ${pMethod}. Nombre del titular de la tarjeta: ${accSender}. Detalle de Productos: ${cartText}. Total pagado: ${totalCUP.toLocaleString()} CUP.`;
+
+                document.getElementById('hidden-invoice-paragraph').value = resumenParrafo;
+
+                const formData = new FormData(shippingForm);
+
+                fetch(shippingForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                }).then(() => {
+                    finalizarYRedirigir();
+                }).catch(() => {
+                    finalizarYRedirigir();
+                });
+
+                function finalizarYRedirigir() {
+                    localStorage.removeItem('cubamax-cart');
+                    shippingForm.reset();
+                    window.location.href = 'termino.html';
+                }
+            });
+        });
+
+        function getCart() {
+            try {
+                return JSON.parse(localStorage.getItem('cubamax-cart')) || [];
+            } catch (err) {
+                return [];
+            }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cubamax-cart', JSON.stringify(cart));
+            updateOrderSummary();
+        }
+
+        function removeItem(index) {
+            let cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+        }
+
+        function updateOrderSummary() {
+            const cart = getCart();
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+            const summaryElement = document.getElementById('order-summary-items');
+
+            if (cart.length === 0) {
+                subtotalElement.textContent = '0 CUP';
+                totalElement.textContent = '0 CUP';
+                summaryElement.innerHTML = `
+                    <div class="text-center py-4 text-muted small">
+                        <i class="fas fa-shopping-basket fa-2x d-block mb-2 text-warning"></i>
+                        <strong>Carrito vacío</strong>
+                    </div>`;
+                return;
+            }
+
+            const rawSubtotalUSD = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const totalCUP = Math.round(rawSubtotalUSD * CUP_EXCHANGE_RATE);
+
+            subtotalElement.textContent = `${totalCUP.toLocaleString()} CUP`;
+            totalElement.textContent = `${totalCUP.toLocaleString()} CUP`;
+
+            summaryElement.innerHTML = cart.map((item, index) => {
+                const itemPriceCUP = Math.round(item.price * item.quantity * CUP_EXCHANGE_RATE);
+                return `
+                    <div class="cart-item-row">
+                        <div class="cart-item-info">
+                            <button type="button" class="btn-delete-item" onclick="removeItem(${index})" title="Eliminar">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <span class="text-truncate fw-semibold" style="font-size: 0.8rem;">${item.quantity}x ${item.name}</span>
+                        </div>
+                        <span class="fw-bold text-dark" style="font-size: 0.85rem;">${itemPriceCUP.toLocaleString()} CUP</span>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
